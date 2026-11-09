@@ -7,8 +7,9 @@ const fs = require('fs');
 const path = require('path');
 
 (async () => {
-  const [mode, voicePath, out, ...rest] = process.argv.slice(2);
+  const [mode, voicePath, out, ...rest] = process.argv.slice(2).filter(a => !a.startsWith('--'));
   const data = JSON.parse(fs.readFileSync(voicePath, 'utf8'));
+  if (process.argv.includes('--utan-presentator')) data.hidePresenter = true;
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
   await page.goto('file://' + path.join(__dirname, 'motor.html'));

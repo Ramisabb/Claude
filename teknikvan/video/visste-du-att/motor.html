@@ -11,7 +11,7 @@
   @font-face { font-family: "SourceSerif"; font-weight: 800; src: url(fonts/source-serif-4-latin-800-normal.woff2); }
   :root {
     --petrol: #164E5C; --petrol-d: #0F3D49; --cream: #F6EFE6; --cream2: #EFE4D4; --copper: #B15B2F;
-    --navy: #1F3A60; --ink: #1B1F23; --gold: #BF8A26; --wine: #880202; --red: #D92B2B; --green: #1E9E62; --blue: #1A6DFF;
+    --navy: #042135; --ink: #1B1F23; --gold: #BF8A26; --wine: #76051F; --red: #D92B2B; --green: #1E9E62; --blue: #1A6DFF;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--cream); }
@@ -19,14 +19,14 @@
   #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden;
     background: radial-gradient(circle at 50% 28%, #FBF7F1 0%, var(--cream) 45%, var(--cream2) 100%); }
   .blob { position: absolute; border-radius: 50%; filter: blur(70px); }
-  #bg1 { width: 640px; height: 640px; background: var(--petrol); opacity: .045; }
+  #bg1 { width: 640px; height: 640px; background: var(--navy); }
   #bg2 { width: 560px; height: 560px; background: var(--gold); opacity: .14; }
-  #bg3 { width: 520px; height: 520px; background: var(--copper); opacity: .035; }
+  #bg3 { width: 520px; height: 520px; background: var(--wine); }
   .ui { font-family: "Inter", sans-serif; }
 
   #pill { position: absolute; top: 92px; left: 64px; background: var(--navy); color: var(--cream); font-weight: 700; font-size: 38px; padding: 12px 28px; border-radius: 40px; letter-spacing: 1px; transform-origin: left center; }
-  #brand { position: absolute; top: 86px; right: 64px; display: flex; align-items: center; gap: 14px; font-family: "SourceSerif"; font-weight: 700; font-size: 46px; color: var(--ink); letter-spacing: -.5px; }
-  #brand svg { width: 64px; height: 64px; }
+  #brand { position: absolute; top: 90px; right: 60px; display: flex; align-items: center; gap: 14px; font-family: "SourceSerif"; font-weight: 700; font-size: 46px; color: var(--ink); letter-spacing: -.5px; }
+  #brand img { height: 60px; display: block; }
   #title { position: absolute; left: 0; width: 1080px; top: 600px; text-align: center; font-family: "SourceSerif"; font-weight: 800; color: var(--navy); line-height: .98; letter-spacing: -3px; }
   #title .l1 { font-size: 190px; }
   #title .l2 { font-size: 160px; }
@@ -152,21 +152,22 @@
 
   #sticker { position: absolute; top: 800px; left: 80px; width: 920px; text-align: center; font-family: "Atkinson"; font-size: 54px; font-weight: 700; line-height: 1.12; padding: 24px 30px; border-radius: 22px; box-shadow: 0 16px 36px rgba(31,58,96,.28); z-index: 45; }
 
-  #subs { position: absolute; top: 1025px; left: 40px; width: 1000px; text-align: center; color: var(--ink); font-family: "Atkinson"; font-size: 68px; font-weight: 700; line-height: 1.1; letter-spacing: -.3px;
+  #subs { position: absolute; top: 1005px; left: 40px; width: 1000px; text-align: center; color: var(--ink); font-family: "Atkinson"; font-size: 68px; font-weight: 700; line-height: 1.1; letter-spacing: -.3px;
     text-shadow: 0 0 18px rgba(251,247,241,.95), 0 0 6px rgba(251,247,241,.9); z-index: 46; }
   #subs span { display: inline-block; margin: 0 7px; }
   #subs span.on { color: var(--wine); }
 
-  #endcard { position: absolute; top: 225px; left: 80px; width: 920px; background: #fff; border-radius: 36px; padding: 48px 50px 46px; text-align: center; color: var(--ink); box-shadow: 0 30px 70px rgba(31,58,96,.25); }
+  #endcard { position: absolute; top: 215px; left: 80px; width: 920px; background: #fff; border-radius: 36px; padding: 30px 50px 32px; text-align: center; color: var(--ink); box-shadow: 0 30px 70px rgba(31,58,96,.25); }
   #endcard .wm { display: flex; align-items: center; justify-content: center; gap: 20px; font-family: "SourceSerif"; font-weight: 700; font-size: 84px; letter-spacing: -2px; }
   #endcard .wm svg { width: 104px; height: 104px; }
   #endcard .city { font-size: 28px; font-weight: 700; color: var(--petrol); letter-spacing: 6px; margin-top: 4px; }
   #endcard .gbar { width: 140px; height: 8px; border-radius: 4px; background: var(--gold); margin: 26px auto 26px; }
-  #endcard .svc { font-family: "SourceSerif"; font-size: 50px; font-weight: 700; letter-spacing: -1px; }
+  #endcard .lg { height: 410px; display: block; margin: 0 auto 6px; }
+  #endcard .svc { font-family: "SourceSerif"; font-size: 46px; font-weight: 700; letter-spacing: -1px; }
   #endcard .desc { font-size: 31px; color: #45556B; margin-top: 10px; line-height: 1.3; }
-  #endcard .price { margin-top: 20px; font-family: "SourceSerif"; font-weight: 700; font-size: 66px; color: var(--navy); }
-  #endcard .cta { margin: 24px auto 0; background: var(--wine); color: #fff; font-size: 44px; font-weight: 700; padding: 24px 0; border-radius: 16px; width: 740px; }
-  #endcard .tel { font-size: 38px; font-weight: 700; margin-top: 22px; color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 12px; }
+  #endcard .price { margin-top: 4px; font-family: "SourceSerif"; font-weight: 700; font-size: 58px; color: var(--navy); }
+  #endcard .cta { margin: 14px auto 0; background: var(--wine); color: #fff; font-size: 44px; font-weight: 700; padding: 24px 0; border-radius: 16px; width: 740px; }
+  #endcard .tel { font-size: 36px; font-weight: 700; margin-top: 14px; color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 12px; }
 
   #presenter { position: absolute; left: 160px; top: 1180px; width: 760px; height: 760px; overflow: visible; }
 </style>
@@ -176,7 +177,7 @@
   <div id="bg1" class="blob"></div><div id="bg2" class="blob"></div><div id="bg3" class="blob"></div>
 
   <div id="pill">VISSTE DU ATT…?</div>
-  <div id="brand"><svg viewBox="0 0 48 48" class="logo"></svg>Teknikvän</div>
+  <div id="brand"><img src="bilder/ordmarke.png" alt="Teknikvän"></div>
   <div id="title"><div class="l1">Visste</div><div class="l2">du att…?</div><div class="bar"></div></div>
 
   <div id="phone">
@@ -291,73 +292,81 @@
   </div>
 
   <div id="endcard">
-    <div class="wm"><svg viewBox="0 0 48 48" class="logo"></svg>Teknikvän</div>
-    <div class="city">ESKILSTUNA</div>
-    <div class="gbar"></div>
+    <img class="lg" src="bilder/logo.png" alt="Teknikvän – en enklare digital vardag">
     <div class="svc" id="ec_svc"></div>
-    <div class="desc" id="ec_desc"></div>
+    <div class="desc" id="ec_desc" style="display:none"></div>
     <div class="price" id="ec_price"></div>
     <div class="cta" id="ctabtn">Boka på teknikvan.se</div>
-    <div class="tel"><svg width="36" height="36" viewBox="0 0 24 24"><path fill="#164E5C" class="hs"/></svg>073-895 59 69</div>
+    <div class="tel"><svg width="36" height="36" viewBox="0 0 24 24"><path fill="#76051F" class="hs"/></svg>073-895 59 69</div>
   </div>
 
   <div id="sticker"></div>
 
-  <!-- PRESENTATÖR: egen illustration (kort mörkt hår, kort helskägg, mörka glasögon, ljus hy) -->
+  <!-- PRESENTATÖR: Teknikväns egen karaktär (lockigt hår, tunna bågar, mustasch + pipskägg, svart piké) -->
   <svg id="presenter" viewBox="0 0 800 800">
     <g id="body">
-      <path d="M40 820 C55 665 150 590 280 566 L400 600 L520 566 C650 590 745 665 760 820 Z" fill="#164E5C"/>
-      <path d="M40 820 C55 665 150 590 280 566 L300 600 C210 640 170 720 160 820 Z" fill="#0F3D49"/>
-      <path d="M760 820 C745 665 650 590 520 566 L500 600 C590 640 630 720 640 820 Z" fill="#0F3D49"/>
-      <path d="M345 430 L345 578 Q400 612 455 578 L455 430 Z" fill="#EDC3A6"/>
-      <path d="M318 560 L400 668 L482 560 Z" fill="#F6EFE6"/>
-      <path d="M300 556 L400 690 L500 556" fill="none" stroke="#0C3440" stroke-width="18" stroke-linejoin="round"/>
-      <g transform="translate(540 664) scale(1.5)"><rect x="-2" y="-2" width="52" height="52" rx="14" fill="#F6EFE6"/><g class="logoInner"></g></g>
+      <path d="M40 820 C55 665 150 590 280 566 L400 600 L520 566 C650 590 745 665 760 820 Z" fill="#19181C"/>
+      <path d="M40 820 C55 665 150 590 280 566 L300 600 C210 640 170 720 160 820 Z" fill="#0E0D10"/>
+      <path d="M760 820 C745 665 650 590 520 566 L500 600 C590 640 630 720 640 820 Z" fill="#0E0D10"/>
+      <path d="M345 430 L345 578 Q400 612 455 578 L455 430 Z" fill="#E6AA86"/>
+      <path d="M345 470 Q400 520 455 470 L455 500 Q400 540 345 500 Z" fill="#D49674" opacity=".7"/>
+      <path d="M326 556 L400 612 L474 556 Z" fill="#E6AA86"/>
+      <path d="M298 552 Q400 516 502 552 L494 574 Q400 544 306 574 Z" fill="#232227"/>
+      <path d="M300 552 L398 610 L344 660 L280 594 Z" fill="#26252B" stroke="#0B0A0D" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M500 552 L402 610 L456 660 L520 594 Z" fill="#26252B" stroke="#0B0A0D" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="386" y="610" width="28" height="118" rx="4" fill="#202024"/>
+      <circle cx="400" cy="640" r="6" fill="#34333A"/><circle cx="400" cy="690" r="6" fill="#34333A"/>
+      <text x="572" y="694" text-anchor="middle" font-family="Inter" font-weight="600" font-size="31" fill="#EDEDED" letter-spacing=".5">Teknikvän</text>
     </g>
     <g id="head">
-      <ellipse cx="400" cy="470" rx="70" ry="22" fill="#D9A587" opacity=".5"/>
-      <ellipse cx="252" cy="318" rx="30" ry="44" fill="#F3CDB3"/>
-      <ellipse cx="548" cy="318" rx="30" ry="44" fill="#F3CDB3"/>
-      <ellipse cx="256" cy="320" rx="13" ry="24" fill="#E3AE8F"/>
-      <ellipse cx="544" cy="320" rx="13" ry="24" fill="#E3AE8F"/>
-      <ellipse cx="400" cy="292" rx="150" ry="178" fill="#F8DAC5"/>
-      <path d="M252 318 Q258 470 400 496 Q542 470 548 318 Q532 412 472 428 Q400 446 328 428 Q268 412 252 318 Z" fill="#2E211A" opacity=".9"/>
-      <ellipse cx="318" cy="356" rx="28" ry="15" fill="#F2A693" opacity=".35"/>
-      <ellipse cx="482" cy="356" rx="28" ry="15" fill="#F2A693" opacity=".35"/>
-      <path d="M244 300 Q234 150 338 110 Q420 80 504 116 Q572 150 558 300 Q550 220 518 192 Q470 212 420 186 Q378 214 318 204 Q268 222 256 300 Z" fill="#23180F"/>
-      <path d="M330 126 Q410 96 488 126 Q430 118 372 148 Z" fill="#3A2A1D"/>
-      <rect id="browL" x="301" y="222" width="78" height="17" rx="8.5" fill="#23180F"/>
-      <rect id="browR" x="421" y="222" width="78" height="17" rx="8.5" fill="#23180F"/>
-      <ellipse cx="341" cy="288" rx="25" ry="21" fill="#fff"/>
-      <ellipse cx="459" cy="288" rx="25" ry="21" fill="#fff"/>
+      <ellipse cx="400" cy="470" rx="72" ry="22" fill="#C98A68" opacity=".45"/>
+      <ellipse cx="258" cy="318" rx="30" ry="44" fill="#EBB48F"/>
+      <ellipse cx="542" cy="318" rx="30" ry="44" fill="#EBB48F"/>
+      <ellipse cx="262" cy="320" rx="13" ry="24" fill="#D39373"/>
+      <ellipse cx="538" cy="320" rx="13" ry="24" fill="#D39373"/>
+      <path d="M266 292 C262 404 312 488 400 500 C488 488 538 404 534 292 C534 176 476 118 400 118 C324 118 266 176 266 292 Z" fill="#F1C19C"/>
+      <path d="M262 360 C276 440 330 482 400 490 C470 482 524 440 538 360 C520 430 470 468 400 472 C330 468 280 430 262 360 Z" fill="#DDA17C" opacity=".55"/>
+      <path d="M258 300 C252 250 260 206 288 176 L312 198 C290 226 280 262 278 300 Z" fill="#5A3B2B" opacity=".5"/>
+      <path d="M542 300 C548 250 540 206 512 176 L488 198 C510 226 520 262 522 300 Z" fill="#5A3B2B" opacity=".5"/>
+      <path d="M270 222 C258 158 300 104 366 92 C436 80 506 100 536 146 C552 172 548 206 536 226 C522 200 500 188 468 186 C430 180 370 182 332 190 C302 196 282 206 270 222 Z" fill="#3B2419"/>
+      <g id="curls"></g>
+      <ellipse cx="320" cy="358" rx="26" ry="14" fill="#EFA48E" opacity=".28"/>
+      <ellipse cx="480" cy="358" rx="26" ry="14" fill="#EFA48E" opacity=".28"/>
+      <path id="browL" d="M298 240 Q336 216 380 230 L378 246 Q338 236 302 254 Z" fill="#2B1B13"/>
+      <path id="browR" d="M502 240 Q464 216 420 230 L422 246 Q462 236 498 254 Z" fill="#2B1B13"/>
+      <ellipse cx="341" cy="291" rx="23" ry="17" fill="#fff"/>
+      <ellipse cx="459" cy="291" rx="23" ry="17" fill="#fff"/>
       <g id="pupils">
-        <circle cx="341" cy="290" r="12.5" fill="#3A2A1D"/><circle cx="345" cy="285" r="4" fill="#fff"/>
-        <circle cx="459" cy="290" r="12.5" fill="#3A2A1D"/><circle cx="463" cy="285" r="4" fill="#fff"/>
+        <circle cx="341" cy="292" r="11" fill="#5A3826"/><circle cx="341" cy="292" r="6" fill="#1A100A"/><circle cx="345" cy="288" r="3.5" fill="#fff"/>
+        <circle cx="459" cy="292" r="11" fill="#5A3826"/><circle cx="459" cy="292" r="6" fill="#1A100A"/><circle cx="463" cy="288" r="3.5" fill="#fff"/>
       </g>
-      <rect id="lidL" x="314" y="265" width="54" height="0" fill="#F8DAC5"/>
-      <rect id="lidR" x="432" y="265" width="54" height="0" fill="#F8DAC5"/>
-      <!-- glasögon -->
-      <g fill="rgba(255,255,255,.10)" stroke="#1B1F23" stroke-width="9" stroke-linejoin="round">
-        <rect x="292" y="252" width="98" height="74" rx="22"/>
-        <rect x="410" y="252" width="98" height="74" rx="22"/>
+      <path d="M316 281 Q341 265 366 281 L366 268 L316 268 Z" fill="#F1C19C"/>
+      <path d="M436 281 Q459 265 484 281 L484 268 L436 268 Z" fill="#F1C19C"/>
+      <path d="M318 282 Q341 268 364 282 M436 282 Q459 268 482 282" fill="none" stroke="#2B1B13" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M322 306 Q341 314 360 306 M440 306 Q459 314 478 306" fill="none" stroke="#D69878" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+      <rect id="lidL" x="316" y="272" width="50" height="0" fill="#F1C19C"/>
+      <rect id="lidR" x="434" y="272" width="50" height="0" fill="#F1C19C"/>
+      <g fill="rgba(255,255,255,.07)" stroke="#5E5047" stroke-width="3.6" stroke-linejoin="round">
+        <path d="M284 258 Q286 246 306 246 L374 248 Q394 250 392 270 Q390 302 372 322 Q358 338 334 336 Q300 332 290 302 Q284 282 284 258 Z"/>
+        <path d="M516 258 Q514 246 494 246 L426 248 Q406 250 408 270 Q410 302 428 322 Q442 338 466 336 Q500 332 510 302 Q516 282 516 258 Z"/>
       </g>
-      <path d="M390 280 Q400 270 410 280" fill="none" stroke="#1B1F23" stroke-width="8" stroke-linecap="round"/>
-      <path d="M292 276 L256 284 M508 276 L544 284" stroke="#1B1F23" stroke-width="8" stroke-linecap="round"/>
-      <path d="M302 262 L318 258" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6"/>
-      <path d="M420 262 L436 258" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6"/>
-      <path d="M400 306 Q389 344 380 353 Q400 364 420 353" fill="none" stroke="#DFA383" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M346 382 Q400 362 454 382 Q444 397 400 391 Q356 397 346 382 Z" fill="#2E211A"/>
-      <g transform="translate(400 416)">
+      <path d="M392 251 L408 251 M393 272 Q400 265 407 272 M284 258 L258 268 M516 258 L542 268" fill="none" stroke="#5E5047" stroke-width="3.4" stroke-linecap="round"/>
+      <path d="M300 268 L318 260 M422 268 L440 260" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+      <path d="M402 300 Q392 344 382 354 Q400 366 418 354" fill="none" stroke="#D69878" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M364 448 Q400 460 436 448 Q446 482 426 506 Q400 524 374 506 Q354 482 364 448 Z" fill="#2A1A12"/>
+      <path d="M392 432 Q400 436 408 432 L404 448 Q400 450 396 448 Z" fill="#2A1A12"/>
+      <g transform="translate(400 420)">
         <g id="mouthOpen">
-          <ellipse id="mo" cx="0" cy="0" rx="36" ry="18" fill="#5E1E22"/>
-          <clipPath id="mclip"><ellipse id="moClip" cx="0" cy="0" rx="36" ry="18"/></clipPath>
+          <ellipse id="mo" cx="0" cy="0" rx="34" ry="18" fill="#5E1E22"/>
+          <clipPath id="mclip"><ellipse id="moClip" cx="0" cy="0" rx="34" ry="18"/></clipPath>
           <g clip-path="url(#mclip)">
-            <rect x="-30" y="-40" width="60" height="31" rx="6" fill="#fff"/>
+            <rect x="-28" y="-40" width="56" height="31" rx="6" fill="#fff"/>
             <ellipse id="tongue" cx="0" cy="22" rx="22" ry="12" fill="#D86A6A"/>
           </g>
         </g>
-        <path id="smile" d="M-36 -4 Q0 22 36 -4" fill="none" stroke="#5E1E22" stroke-width="8" stroke-linecap="round"/>
+        <path id="smile" d="M-34 -4 Q0 22 34 -4" fill="none" stroke="#9C4A3C" stroke-width="7" stroke-linecap="round"/>
       </g>
+      <path d="M340 392 Q366 368 400 378 Q434 368 460 392 Q464 404 452 406 Q428 392 400 396 Q372 392 348 406 Q336 404 340 392 Z" fill="#2A1A12"/>
     </g>
   </svg>
 
@@ -389,11 +398,36 @@ function pose(el, { x = 0, y = 0, s = 1, r = 0, o = 1 }) {
   el.style.opacity = o;
   el.style.visibility = o <= 0.001 ? 'hidden' : 'visible';
 }
-const STY = { warn: ['#880202', '#fff'], info: ['#1F3A60', '#F6EFE6'], good: ['#164E5C', '#F6EFE6'], gold: ['#BF8A26', '#1B1F23'] };
+const STY = { warn: ['#76051F', '#fff'], info: ['#042135', '#F6EFE6'], good: ['#164E5C', '#F6EFE6'], gold: ['#BF8A26', '#1B1F23'] };
+
+
+function buildHair() {
+  const H = '#3B2419', HL = '#6E4632', HD = '#22140C';
+  let h = '';
+  // volym på toppen (högre fram/höger), tajta sidor
+  [[300, 176, 30], [318, 140, 32], [352, 114, 36], [398, 98, 38], [446, 100, 37], [490, 118, 34], [522, 148, 30], [532, 182, 24],
+   [336, 182, 26], [374, 168, 28], [414, 160, 30], [456, 164, 28], [494, 176, 26], [520, 204, 18], [290, 204, 16]]
+    .forEach(([x, y, r]) => h += `<circle cx="${x}" cy="${y}" r="${r}" fill="${H}"/>`);
+  // lockiga slingor (S-former) i två toner
+  for (let i = 0; i < 22; i++) {
+    const x = 316 + 200 * hash(i + 11), y = 104 + 90 * hash(i + 29);
+    const r = 10 + 7 * hash(i + 5), d = hash(i + 51) > .5 ? 1 : -1;
+    const path = `M${(x - r).toFixed(1)} ${(y + r * .3).toFixed(1)} q${(r * .5).toFixed(1)} ${(-r * 1.2).toFixed(1)} ${(r).toFixed(1)} 0 t${(r).toFixed(1)} ${(d * r * .2).toFixed(1)}`;
+    h += `<path d="${path}" fill="none" stroke="${HD}" stroke-width="6" stroke-linecap="round" opacity=".55" transform="translate(0 4)"/>`;
+    h += `<path d="${path}" fill="none" stroke="${HL}" stroke-width="4.5" stroke-linecap="round" opacity=".85"/>`;
+  }
+  // några lösa lockar längs pannan
+  [[322, 200], [360, 190], [402, 184], [444, 188], [482, 198]].forEach(([x, y], i) => {
+    h += `<path d="M${x - 9} ${y} a9 9 0 1 ${i % 2} 14 6" fill="none" stroke="${HL}" stroke-width="4" stroke-linecap="round" opacity=".8"/>`;
+  });
+  document.getElementById('curls').innerHTML = h;
+}
 
 let D = null, linkPos = null, blinks = [];
 function init(data) {
   D = data;
+  buildHair();
+  if (D.hidePresenter) $('presenter').style.display = 'none';
   const sr = $('screen').getBoundingClientRect();
   const show = $('scr_sms'); show.style.visibility = 'visible';
   const lr = $('link').getBoundingClientRect();
@@ -439,7 +473,7 @@ function containerPose(cont, t, k) {
     if (k === 0) {
       const t0 = cur.start + (cur.title ? 1.3 : 0.1);
       if (cont === 'end') return { o: prog(t, t0, .4), s: lerp(.85, 1, eBack(prog(t, t0, .6))), y: 0, x: 0 };
-      const e = prog(t, t0, 0.7); return { x: 0, y: (1 - eBack(e)) * 1500, o: e > 0 ? 1 : 0, r: 0 };
+      const e = prog(t, t0, 0.6); return { x: 0, y: (1 - eOut(e)) * 90, s: lerp(.55, 1, eBack(e)), o: Math.min(1, e * 3), r: 0 };
     }
     if (S[k - 1].container !== cont) {
       const b = cur.start;
@@ -461,9 +495,9 @@ const SCREENS = ['alert', 'sms', 'update', 'bankcall', 'bankid', 'callback'];
 function render(t) {
   const S = D.scenes, k = sceneAt(t), cur = S[k], first = S[0];
   // bakgrund
-  pose($('bg1'), { x: -200 + 70 * Math.sin(t * .23), y: 100 + 80 * Math.cos(t * .19) });
-  pose($('bg2'), { x: 620 + 70 * Math.cos(t * .21), y: 760 + 90 * Math.sin(t * .17) });
-  pose($('bg3'), { x: 560 + 120 * Math.sin(t * .13), y: 380 + 60 * Math.cos(t * .29) });
+  pose($('bg1'), { x: -200 + 70 * Math.sin(t * .23), y: 100 + 80 * Math.cos(t * .19), o: .06 });
+  pose($('bg2'), { x: 620 + 70 * Math.cos(t * .21), y: 760 + 90 * Math.sin(t * .17), o: .14 });
+  pose($('bg3'), { x: 560 + 120 * Math.sin(t * .13), y: 380 + 60 * Math.cos(t * .29), o: .05 });
 
   // titel + topp
   const tt0 = first.title ? first.start + 0.05 : -10;
@@ -530,21 +564,21 @@ function render(t) {
   $('body').setAttribute('transform', `translate(0 ${breathe * 0.5}) rotate(${rot * 0.25} 400 800)`);
   const q = sub && /\?|Visste|ALDRIG|ÄR|inte\.|inget|Lägg på|fejka/.test(sub.txt) ? Math.sin(Math.PI * clamp(prog(t, sub.start, 0.25) * (1 - prog(t, sub.end - 0.3, 0.3)))) : 0;
   const lift = -12 * clamp(q * 1.4);
-  $('browL').setAttribute('transform', `translate(0 ${lift}) rotate(${lift * 0.25} 341 230)`);
-  $('browR').setAttribute('transform', `translate(0 ${lift}) rotate(${-lift * 0.25} 459 230)`);
+  $('browL').setAttribute('transform', `translate(0 ${lift}) rotate(${lift * 0.25} 340 238)`);
+  $('browR').setAttribute('transform', `translate(0 ${lift}) rotate(${-lift * 0.25} 460 238)`);
   let lid = 0; for (const b of blinks) { if (t >= b && t < b + 0.18) { lid = Math.sin((t - b) / 0.18 * Math.PI); break; } }
   ['lidL', 'lidR'].forEach(id => $(id).setAttribute('height', 46 * lid));
-  const look = cur.kind !== 'cta' && t > 1.3 ? -5 : 0;
+  const look = cur.kind !== 'cta' && t > 1.3 ? -2.5 : 0;
   $('pupils').setAttribute('transform', `translate(${2 * Math.sin(t * .5)} ${look + Math.sin(t * .37)})`);
   const ry = 3 + 25 * clamp(open);
-  const rx = 30 + 8 * clamp(open) - 3 * clamp(open - 0.7) * Math.sin(t * 9);
+  const rx = 28 + 8 * clamp(open) - 3 * clamp(open - 0.7) * Math.sin(t * 9);
   ['mo', 'moClip'].forEach(id => { $(id).setAttribute('ry', ry); $(id).setAttribute('rx', rx); });
   $('tongue').setAttribute('cy', 6 + ry * 0.7);
   const speaking = open > 0.02 || talk > 0.08;
   $('mouthOpen').style.opacity = speaking ? 1 : 0;
   $('smile').style.opacity = speaking ? 0 : 1;
   const big = cur.kind === 'cta' ? 1.25 : 1;
-  $('smile').setAttribute('d', `M${-36 * big} -4 Q0 ${18 + 6 * big} ${36 * big} -4`);
+  $('smile').setAttribute('d', `M${-34 * big} -4 Q0 ${18 + 6 * big} ${34 * big} -4`);
 }
 
 function drawScreen(sc, t) {
