@@ -1,0 +1,128 @@
+{
+  "_info": "say = det rösten läser (med uttalsstavning), subs = undertexter. Händelser: [rad, textbit, sekunder efter].",
+
+  "virus": {
+    "titel": "Visste du att… – virus på mobil och dator",
+    "endcard": { "svc": "Digital säkerhetsgenomgång", "desc": "Vi kollar och säkrar dina enheter –<br>hemma hos dig.", "price": "699 kr" },
+    "scenes": [
+      { "kind": "alert", "title": true,
+        "lines": [
+          { "say": "Visste du att det här, oftast är själva bluffen?", "subs": ["Visste du att det här…", "oftast ÄR själva bluffen?"] },
+          { "say": "Falska virusvarningar som plötsligt dyker upp i mobilen eller datorn, är ett vanligt knep.", "subs": ["Falska virusvarningar", "som plötsligt dyker upp", "i mobilen eller datorn", "är ett vanligt knep."] },
+          { "say": "De vill att du trycker, laddar ner en app, eller ringer ett nummer.", "subs": ["De vill att du trycker,", "laddar ner en app", "eller ringer ett nummer."] },
+          { "say": "Gör inget av det.", "subs": ["Gör inget av det."] },
+          { "say": "Stäng bara fliken.", "subs": ["Stäng bara fliken."] }
+        ],
+        "events": { "stamp": [3, 0, 0.1], "close": [4, 0, 0.45] },
+        "stickers": [ { "at": [3, 0, 0.15], "html": "Falsk varning?<br>Tryck inte – stäng fliken.", "style": "warn" } ] },
+
+      { "kind": "call",
+        "lines": [
+          { "say": "Visste du också, att Majkråsoft aldrig ringer upp dig, och säger att din dator har virus?", "subs": ["Visste du också", "att Microsoft aldrig ringer upp dig", "och säger att din dator har virus?"] },
+          { "say": "Om någon gör det: lägg på.", "subs": ["Om någon gör det:", "lägg på."] }
+        ],
+        "events": { "decline": [1, 1, 0.1] },
+        "stickers": [ { "at": [0, 1, 0.3], "html": "Microsoft ringer ALDRIG<br>om virus. Lägg på!", "style": "warn" } ] },
+
+      { "kind": "sms",
+        "lines": [
+          { "say": "Och de flesta virus på mobilen, kommer inte av sig själva.", "subs": ["Och de flesta ”virus” på mobilen", "kommer inte av sig själva."] },
+          { "say": "De kommer via en länk, oftast i ett sms, om ett paket, en faktura, eller din bank.", "subs": ["De kommer via en länk,", "oftast i ett SMS", "om ett paket, en faktura", "eller din bank."] },
+          { "say": "Klicka inte.", "subs": ["Klicka inte."] },
+          { "say": "Öppna appen eller webbsidan själv i stället.", "subs": ["Öppna appen eller webbsidan", "själv i stället."] }
+        ],
+        "events": { "finger": [1, 2, 0], "nope": [2, 0, 0.05] },
+        "stickers": [ { "at": [2, 0, 0.1], "html": "Klicka inte på länkar i SMS", "style": "gold" } ] },
+
+      { "kind": "update",
+        "lines": [
+          { "say": "Det bästa skyddet? Det är faktiskt enkelt.", "subs": ["Det bästa skyddet?", "Det är faktiskt enkelt."] },
+          { "say": "Uppdatera mobilen och datorn när de ber om det.", "subs": ["Uppdatera mobilen och datorn", "när de ber om det."] },
+          { "say": "Det tar några minuter, och täpper till säkerhetshålen.", "subs": ["Det tar några minuter", "och täpper till säkerhetshålen."] }
+        ],
+        "events": { "tap": [1, 0, 0.3], "done": [2, 1, 0.0] },
+        "stickers": [ { "at": [2, 1, 0.5], "html": "Uppdatera = bästa skyddet", "style": "good" } ] },
+
+      { "kind": "cta",
+        "lines": [
+          { "say": "Osäker på om din mobil eller dator är säker?", "subs": ["Osäker på om din mobil", "eller dator är säker?"] },
+          { "say": "Vi på Teknikvän går igenom den tillsammans med dig, hemma hos dig i Eskilstuna.", "subs": ["Vi på Teknikvän går igenom den", "tillsammans med dig,", "hemma hos dig i Eskilstuna."] },
+          { "say": "Boka på teknikvan punkt se. Och följ oss för fler, visste du att!", "subs": ["Boka på teknikvan.se", "och följ oss för fler", "”Visste du att”!"] }
+        ],
+        "events": { "pulse": [2, 0, 0.1] } }
+    ]
+  },
+
+  "virus-kort": {
+    "titel": "Visste du att… – virus (kort version)",
+    "endcard": { "svc": "Digital säkerhetsgenomgång", "desc": "Vi kollar och säkrar dina enheter –<br>hemma hos dig.", "price": "699 kr" },
+    "scenes": [
+      { "kind": "alert", "title": true,
+        "lines": [
+          { "say": "Visste du att det här, oftast är själva bluffen?", "subs": ["Visste du att det här…", "oftast ÄR själva bluffen?"] },
+          { "say": "Falska virusvarningar vill att du trycker, laddar ner en app, eller ringer ett nummer.", "subs": ["Falska virusvarningar vill", "att du trycker, laddar ner en app", "eller ringer ett nummer."] },
+          { "say": "Gör inget av det. Stäng bara fliken.", "subs": ["Gör inget av det.", "Stäng bara fliken."] }
+        ],
+        "events": { "stamp": [2, 0, 0.1], "close": [2, 1, 0.4] },
+        "stickers": [ { "at": [2, 0, 0.15], "html": "Falsk varning?<br>Tryck inte – stäng fliken.", "style": "warn" } ] },
+
+      { "kind": "sms",
+        "lines": [
+          { "say": "Och på mobilen, kommer de flesta virus via en länk i ett sms.", "subs": ["Och på mobilen kommer de flesta", "”virus” via en länk i ett SMS."] },
+          { "say": "Klicka inte. Öppna appen själv i stället.", "subs": ["Klicka inte.", "Öppna appen själv i stället."] }
+        ],
+        "events": { "finger": [0, 1, 0], "nope": [1, 0, 0.05] },
+        "stickers": [ { "at": [1, 0, 0.1], "html": "Klicka inte på länkar i SMS", "style": "gold" } ] },
+
+      { "kind": "cta",
+        "lines": [
+          { "say": "Osäker? Teknikvän hjälper dig, hemma i Eskilstuna.", "subs": ["Osäker?", "Teknikvän hjälper dig", "hemma i Eskilstuna."] },
+          { "say": "Boka på teknikvan punkt se.", "subs": ["Boka på teknikvan.se"] }
+        ],
+        "events": { "pulse": [1, 0, 0.1] } }
+    ]
+  },
+
+  "bankid": {
+    "titel": "Visste du att… – BankID-samtal",
+    "endcard": { "svc": "Digital säkerhetsgenomgång", "desc": "Bluff-samtal, BankID och lösenord –<br>vi går igenom allt hemma hos dig.", "price": "699 kr" },
+    "scenes": [
+      { "kind": "bankcall", "title": true,
+        "lines": [
+          { "say": "Visste du att banken aldrig ringer, och ber dig legitimera dig med bank-i-d?", "subs": ["Visste du att banken", "ALDRIG ringer och ber dig", "legitimera dig med BankID?"] },
+          { "say": "Ändå är det ett vanligt bedrägeri.", "subs": ["Ändå är det", "ett vanligt bedrägeri."] },
+          { "say": "Bedragaren låter stressad, och säger att ditt konto är i fara.", "subs": ["Bedragaren låter stressad", "och säger att ditt konto är i fara."] },
+          { "say": "Och numret kan se äkta ut. Det går att fejka.", "subs": ["Och numret kan se äkta ut.", "Det går att fejka."] }
+        ],
+        "events": { "answer": [1, 0, 0.1], "q1": [2, 1, 0], "q2": [3, 0, 0.2] },
+        "stickers": [
+          { "at": [0, 1, 0.2], "html": "Banken ringer ALDRIG<br>och ber om BankID", "style": "info", "dur": 4.6 },
+          { "at": [3, 1, 0.1], "html": "Numret kan vara fejkat!", "style": "warn" }
+        ] },
+
+      { "kind": "bankid",
+        "lines": [
+          { "say": "Om du legitimerar dig, eller skriver under, kan de tömma ditt konto.", "subs": ["Om du legitimerar dig", "eller skriver under,", "kan de tömma ditt konto."] },
+          { "say": "Så gör inte det. Lägg på direkt.", "subs": ["Så gör inte det.", "Lägg på direkt."] }
+        ],
+        "events": { "finger": [0, 0, 0.3], "stamp": [1, 1, 0.05] },
+        "stickers": [ { "at": [1, 1, 0.2], "html": "BankID i telefon?<br>Lägg på!", "style": "warn" } ] },
+
+      { "kind": "callback",
+        "lines": [
+          { "say": "Ring sedan banken själv, på numret som står på ditt bankkort, eller på bankens webbplats.", "subs": ["Ring sedan banken själv,", "på numret som står på ditt bankkort", "eller på bankens webbplats."] },
+          { "say": "Och kom ihåg: varken banken, polisen, eller någon myndighet, ber dig om bank-i-d i telefon.", "subs": ["Och kom ihåg:", "varken banken, polisen", "eller någon myndighet", "ber dig om BankID i telefon."] }
+        ],
+        "events": { "card": [0, 1, 0], "dial": [0, 2, 0.4] },
+        "stickers": [ { "at": [1, 1, 0], "html": "Lägg på – ring banken själv", "style": "good" } ] },
+
+      { "kind": "cta",
+        "lines": [
+          { "say": "Vill du känna dig tryggare med mobilen och bank-i-d?", "subs": ["Vill du känna dig tryggare", "med mobilen och BankID?"] },
+          { "say": "Vi på Teknikvän går igenom din säkerhet, hemma hos dig i Eskilstuna.", "subs": ["Vi på Teknikvän går igenom", "din säkerhet,", "hemma hos dig i Eskilstuna."] },
+          { "say": "Boka på teknikvan punkt se. Och följ oss för fler, visste du att!", "subs": ["Boka på teknikvan.se", "och följ oss för fler", "”Visste du att”!"] }
+        ],
+        "events": { "pulse": [2, 0, 0.1] } }
+    ]
+  }
+}

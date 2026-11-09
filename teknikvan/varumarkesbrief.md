@@ -140,8 +140,11 @@ Format: en tydlig fråga, 3–5 steg, lugn speakerröst, stor text och en avslut
 
 ## 9. Saknas, att komplettera
 
-- [ ] Logotyp (fil) och färgkoder
-- [ ] Typsnitt
+- [x] Märkessymbol: `teknikvan.se/favicon.svg` (två personer och ett hjärta), kopierad till `video/visste-du-att/logo-symbol.svg`.
+  OBS: logobilden i sajtens sidhuvud (Wix-bild) visas som en tom platshållare och bör bytas.
+- [x] Färger: petrol `#164E5C`, kräm `#F6EFE6`, koppar `#B15B2F`, knappar vinröd `#880202`, marinblå `#1F3A60`, guld `#BF8A26`, text `#1B1F23`
+- [x] Typsnitt: Source Serif 4 (rubriker) och Atkinson Hyperlegible (text)
+- [x] Slogan på sajten: "Teknik ska hjälpa dig – inte göra livet svårare."
 - [ ] Officiell slogan eller tagline från webbplatsen
 - [ ] "Om oss": vem som står bakom Teknikvän, och ansikte och namn för filmerna
 - [ ] Kundomdömen

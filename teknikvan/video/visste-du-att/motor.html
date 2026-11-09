@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Visste du att – videomotor</title>
+<style>
+  @font-face { font-family: "Atkinson"; font-weight: 400; src: url(fonts/atkinson-hyperlegible-latin-400-normal.woff2); }
+  @font-face { font-family: "Atkinson"; font-weight: 700; src: url(fonts/atkinson-hyperlegible-latin-700-normal.woff2); }
+  @font-face { font-family: "SourceSerif"; font-weight: 600; src: url(fonts/source-serif-4-latin-600-normal.woff2); }
+  @font-face { font-family: "SourceSerif"; font-weight: 700; src: url(fonts/source-serif-4-latin-700-normal.woff2); }
+  @font-face { font-family: "SourceSerif"; font-weight: 800; src: url(fonts/source-serif-4-latin-800-normal.woff2); }
+  :root {
+    --petrol: #164E5C; --petrol-d: #0F3D49; --cream: #F6EFE6; --cream2: #EFE4D4; --copper: #B15B2F;
+    --navy: #1F3A60; --ink: #1B1F23; --gold: #BF8A26; --wine: #880202; --red: #D92B2B; --green: #1E9E62; --blue: #1A6DFF;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--cream); }
+  body { font-family: "Atkinson", sans-serif; -webkit-font-smoothing: antialiased; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: radial-gradient(circle at 50% 28%, #FBF7F1 0%, var(--cream) 45%, var(--cream2) 100%); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); }
+  #bg1 { width: 640px; height: 640px; background: var(--petrol); opacity: .045; }
+  #bg2 { width: 560px; height: 560px; background: var(--gold); opacity: .14; }
+  #bg3 { width: 520px; height: 520px; background: var(--copper); opacity: .035; }
+  .ui { font-family: "Inter", sans-serif; }
+
+  #pill { position: absolute; top: 92px; left: 64px; background: var(--navy); color: var(--cream); font-weight: 700; font-size: 38px; padding: 12px 28px; border-radius: 40px; letter-spacing: 1px; transform-origin: left center; }
+  #brand { position: absolute; top: 86px; right: 64px; display: flex; align-items: center; gap: 14px; font-family: "SourceSerif"; font-weight: 700; font-size: 46px; color: var(--ink); letter-spacing: -.5px; }
+  #brand svg { width: 64px; height: 64px; }
+  #title { position: absolute; left: 0; width: 1080px; top: 600px; text-align: center; font-family: "SourceSerif"; font-weight: 800; color: var(--navy); line-height: .98; letter-spacing: -3px; }
+  #title .l1 { font-size: 190px; }
+  #title .l2 { font-size: 160px; }
+  #title .bar { width: 260px; height: 16px; border-radius: 8px; background: var(--gold); margin: 34px auto 0; }
+
+  /* Telefon */
+  #phone { position: absolute; left: 350px; top: 230px; width: 380px; height: 760px; background: #15171B; border-radius: 58px; padding: 14px; box-shadow: 0 40px 80px rgba(31,58,96,.35), inset 0 0 0 3px #2A2D33; }
+  #screen { position: relative; width: 352px; height: 732px; border-radius: 45px; overflow: hidden; background: #fff; }
+  .notch { position: absolute; top: 26px; left: 135px; width: 110px; height: 30px; border-radius: 16px; background: #15171B; z-index: 50; }
+  .scr { position: absolute; inset: 0; visibility: hidden; }
+  .status { position: absolute; top: 24px; left: 30px; font-size: 17px; font-weight: 700; color: #111; }
+
+  /* alert */
+  #scr_alert { background: #EEF0F4; }
+  .url { position: absolute; top: 68px; left: 18px; right: 18px; height: 40px; border-radius: 12px; background: #fff; color: #777; font-size: 15px; display: flex; align-items: center; padding-left: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+  .fakeline { position: absolute; left: 22px; height: 14px; border-radius: 7px; background: #D9DCE3; }
+  #modal { position: absolute; left: 18px; width: 316px; top: 160px; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(200,0,0,.35); }
+  #modal .hd { background: #E5262B; color: #fff; height: 84px; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 38px; font-weight: 900; letter-spacing: 1px; }
+  #modal .bd { padding: 20px 20px 22px; text-align: center; }
+  #modal .big { font-size: 25px; font-weight: 800; color: #1A1A1A; line-height: 1.2; }
+  #modal .small { font-size: 17px; color: #555; margin: 10px 0 16px; line-height: 1.3; }
+  #modal .btn { background: #E5262B; color: #fff; font-size: 26px; font-weight: 900; border-radius: 16px; height: 66px; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
+  #modal .count { color: #E5262B; font-weight: 800; font-size: 17px; margin-top: 12px; }
+  .stamp { position: absolute; left: 30px; width: 292px; padding: 14px 0; text-align: center; border: 9px solid var(--wine); border-radius: 22px; color: var(--wine); background: rgba(255,255,255,.94); font-size: 46px; font-weight: 900; letter-spacing: 1px; font-family: "Atkinson"; z-index: 30; }
+  #home { position: absolute; inset: 0; background: linear-gradient(160deg, #8FD3E0 0%, #3F8FA3 50%, var(--petrol) 100%); }
+  #grid { position: absolute; top: 150px; left: 26px; right: 26px; display: grid; grid-template-columns: repeat(4, 62px); gap: 26px 18px; justify-content: space-between; }
+  #grid div { width: 62px; height: 62px; border-radius: 17px; box-shadow: 0 3px 8px rgba(0,0,0,.15); }
+  #toast { position: absolute; top: 78px; left: 0; right: 0; margin: 0 auto; width: max-content; background: var(--green); color: #fff; font-weight: 800; font-size: 21px; padding: 12px 22px; border-radius: 30px; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 20px rgba(0,0,0,.25); }
+
+  /* sms */
+  #scr_sms { background: #fff; }
+  .smshd { position: absolute; top: 0; left: 0; right: 0; height: 150px; background: #F6F6F8; border-bottom: 1px solid #E2E2E6; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 12px; gap: 6px; }
+  .av { width: 54px; height: 54px; border-radius: 50%; background: #A5ABB6; color: #fff; font-size: 30px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  .smshd .nm { font-size: 17px; font-weight: 700; color: #111; }
+  .smstime { position: absolute; top: 172px; left: 0; right: 0; text-align: center; font-size: 14px; color: #8A8F98; font-weight: 600; }
+  #bubble { position: absolute; top: 205px; left: 16px; width: 280px; background: #E9E9EB; border-radius: 24px 24px 24px 8px; padding: 16px 18px; font-size: 20px; line-height: 1.32; color: #111; transform-origin: left bottom; }
+  #bubble .link { color: var(--blue); text-decoration: underline; font-weight: 600; word-break: break-all; }
+  .finger { position: absolute; width: 78px; height: 78px; border-radius: 50%; background: rgba(255,255,255,.35); border: 5px solid #fff; box-shadow: 0 6px 18px rgba(0,0,0,.35); z-index: 25; }
+  .finger::after { content: ""; position: absolute; left: 22px; top: 22px; width: 24px; height: 24px; border-radius: 50%; background: #fff; }
+  #nope { position: absolute; width: 190px; height: 190px; z-index: 26; }
+
+  /* update */
+  #scr_update { background: #F2F2F7; }
+  .back { position: absolute; top: 70px; left: 20px; color: var(--blue); font-size: 19px; font-weight: 600; }
+  .uptitle { position: absolute; top: 104px; left: 20px; font-size: 31px; font-weight: 800; color: #111; letter-spacing: -.5px; }
+  #upcard { position: absolute; top: 165px; left: 16px; right: 16px; background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .uprow { display: flex; gap: 14px; align-items: center; }
+  .upicon { width: 66px; height: 66px; border-radius: 16px; background: linear-gradient(160deg, #9BA3AF, #5F6773); display: flex; align-items: center; justify-content: center; }
+  .upname { font-size: 20px; font-weight: 800; color: #111; }
+  .upsub { font-size: 15px; color: #8A8F98; margin-top: 3px; }
+  .uptext { font-size: 16px; color: #444; line-height: 1.35; margin: 16px 0 18px; }
+  #upbtn { height: 58px; border-radius: 14px; background: var(--blue); color: #fff; font-size: 22px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  #upprog { display: none; }
+  .bar { height: 14px; border-radius: 7px; background: #DCE3F0; overflow: hidden; }
+  #barfill { height: 100%; width: 0; background: var(--blue); border-radius: 7px; }
+  #proglbl { font-size: 17px; color: #444; font-weight: 700; margin-top: 10px; }
+  #updone { position: absolute; top: 345px; left: 0; right: 0; text-align: center; }
+  .okc { width: 128px; height: 128px; margin: 0 auto 16px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 26px rgba(30,158,98,.45); }
+  #updone .t { font-size: 24px; font-weight: 800; color: #148A53; }
+
+  /* bankcall */
+  #scr_bankcall { background: linear-gradient(170deg, #3B4756 0%, #1D232C 100%); color: #fff; text-align: center; }
+  #bc_top { position: absolute; top: 120px; left: 0; right: 0; }
+  #bc_lbl { font-size: 19px; color: #C9CED6; font-weight: 600; }
+  #bc_name { font-size: 44px; font-weight: 800; margin-top: 10px; letter-spacing: -.5px; }
+  #bc_sub { font-size: 18px; color: #C9CED6; margin-top: 6px; }
+  #bc_av { width: 120px; height: 120px; border-radius: 50%; background: #5A6575; margin: 40px auto 0; display: flex; align-items: center; justify-content: center; }
+  #bc_btns { position: absolute; bottom: 80px; left: 0; right: 0; display: flex; justify-content: center; gap: 110px; }
+  .rb { width: 86px; height: 86px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .rb.red { background: #E5262B; } .rb.green { background: #1FAE6B; }
+  #bc_end { position: absolute; bottom: 80px; left: 0; right: 0; display: flex; justify-content: center; }
+  .quote { position: absolute; width: 450px; background: #fff; border: 5px solid var(--red); border-radius: 30px; padding: 22px 28px; font-family: "SourceSerif"; font-weight: 700; font-style: italic; font-size: 40px; line-height: 1.15; color: var(--ink); box-shadow: 0 16px 36px rgba(0,0,0,.25); z-index: 40; }
+  .quote .who { display: block; font-family: "Atkinson"; font-style: normal; font-size: 22px; color: var(--red); font-weight: 700; margin-bottom: 6px; letter-spacing: 1px; }
+  .quote::after { content: ""; position: absolute; bottom: -22px; width: 34px; height: 34px; background: #fff; border-right: 5px solid var(--red); border-bottom: 5px solid var(--red); transform: rotate(45deg); }
+  #q1 { left: 30px; top: 500px; } #q1::after { right: 70px; }
+  #q2 { left: 600px; top: 620px; } #q2::after { left: 70px; }
+
+  /* bankid (generisk legitimering) */
+  #scr_bankid { background: #F4F6F9; text-align: center; }
+  #bi_hd { position: absolute; top: 66px; left: 0; right: 0; font-size: 20px; font-weight: 700; color: #111; }
+  #bi_icon { position: absolute; top: 130px; left: 0; right: 0; margin: 0 auto; width: 120px; height: 120px; border-radius: 34px; background: #2D4E86; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px rgba(45,78,134,.35); }
+  #bi_t { position: absolute; top: 280px; left: 20px; right: 20px; font-size: 27px; font-weight: 800; color: #111; }
+  #bi_s { position: absolute; top: 324px; left: 24px; right: 24px; font-size: 17px; color: #555; line-height: 1.35; }
+  #bi_req { position: absolute; top: 396px; left: 24px; right: 24px; background: #fff; border-radius: 16px; padding: 14px; font-size: 16px; color: #333; text-align: left; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+  #bi_req b { color: var(--red); }
+  #bi_btn { position: absolute; top: 500px; left: 24px; right: 24px; height: 64px; border-radius: 16px; background: #2D4E86; color: #fff; font-size: 23px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  #bi_cancel { position: absolute; top: 584px; left: 0; right: 0; font-size: 19px; color: var(--blue); font-weight: 600; }
+  #bi_dim { position: absolute; inset: 0; background: rgba(20,24,30,.45); z-index: 20; }
+
+  /* callback */
+  #scr_callback { background: #fff; text-align: center; }
+  #cb_lbl { position: absolute; top: 82px; left: 0; right: 0; font-size: 16px; color: #8A8F98; font-weight: 600; }
+  #cb_num { position: absolute; top: 108px; left: 0; right: 0; font-size: 30px; font-weight: 800; color: #111; }
+  #cb_state { position: absolute; top: 152px; left: 0; right: 0; font-size: 18px; color: var(--green); font-weight: 700; }
+  #keypad { position: absolute; top: 205px; left: 46px; right: 46px; display: grid; grid-template-columns: repeat(3, 78px); justify-content: space-between; gap: 18px 0; }
+  #keypad div { width: 78px; height: 78px; border-radius: 50%; background: #EEF0F3; font-size: 32px; font-weight: 500; color: #111; display: flex; align-items: center; justify-content: center; }
+  #cb_call { position: absolute; top: 620px; left: 0; right: 0; margin: 0 auto; width: 86px; height: 86px; border-radius: 50%; background: #1FAE6B; display: flex; align-items: center; justify-content: center; }
+  #bankcard { position: absolute; left: 70px; top: 560px; width: 470px; height: 296px; border-radius: 26px; background: linear-gradient(135deg, #2E4A70, var(--navy)); box-shadow: 0 24px 50px rgba(0,0,0,.35); overflow: hidden; z-index: 35; color: #fff; }
+  #bankcard .strip { position: absolute; top: 34px; left: 0; right: 0; height: 62px; background: #111; }
+  #bankcard .sign { position: absolute; top: 122px; left: 28px; width: 260px; height: 46px; background: repeating-linear-gradient(90deg, #F3F3F3 0 10px, #E2E2E2 10px 20px); border-radius: 6px; }
+  #bankcard .ks { position: absolute; left: 28px; top: 190px; font-size: 24px; font-weight: 700; }
+  #bankcard .kn { position: absolute; left: 28px; top: 224px; font-size: 34px; font-weight: 700; letter-spacing: 2px; color: #FFE08A; }
+  #bankcard .hl { position: absolute; left: 18px; top: 180px; width: 330px; height: 96px; border: 5px solid #FFE08A; border-radius: 16px; }
+
+  /* laptop + samtal */
+  #laptop { position: absolute; left: 110px; top: 300px; width: 860px; height: 520px; }
+  #lscreen { position: absolute; left: 70px; top: 0; width: 720px; height: 466px; background: #1C1F25; border-radius: 26px; padding: 18px; }
+  #ldisp { width: 100%; height: 100%; border-radius: 12px; overflow: hidden; background: linear-gradient(150deg, #3F8FA3 0%, var(--petrol) 100%); position: relative; }
+  .win { position: absolute; background: #fff; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+  .win .wl { height: 10px; border-radius: 5px; background: #E0E3EA; margin: 12px 16px 0; }
+  .win .wt { height: 26px; background: #F1F2F5; border-radius: 10px 10px 0 0; }
+  #lbase { position: absolute; left: 0; top: 462px; width: 860px; height: 38px; background: linear-gradient(#D3D8DF, #9EA5B0); border-radius: 4px 4px 34px 34px; }
+  #lbase::after { content: ""; position: absolute; left: 360px; top: 0; width: 140px; height: 12px; border-radius: 0 0 12px 12px; background: #8E95A1; }
+  #call { position: absolute; left: 220px; top: 360px; width: 640px; background: rgba(24,25,30,.97); border-radius: 40px; padding: 34px 30px 36px; color: #fff; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,.4); }
+  #call .lbl { font-size: 24px; color: #A9AFBA; font-weight: 600; }
+  #call .cav { width: 104px; height: 104px; border-radius: 50%; background: #5A606B; margin: 18px auto 14px; display: flex; align-items: center; justify-content: center; font-size: 56px; font-weight: 800; }
+  #call .nm { font-size: 42px; font-weight: 800; }
+  #call .nr { font-size: 22px; color: #A9AFBA; margin-top: 6px; }
+  #callbtns { display: flex; justify-content: center; gap: 150px; margin-top: 30px; }
+  #callbtns .b { width: 104px; height: 104px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  #callbtns .bl { font-size: 20px; color: #C9CED6; margin-top: 10px; font-weight: 600; }
+  #decl { background: #E5262B; } #acc { background: #1FAE6B; }
+
+  #sticker { position: absolute; top: 800px; left: 80px; width: 920px; text-align: center; font-family: "Atkinson"; font-size: 54px; font-weight: 700; line-height: 1.12; padding: 24px 30px; border-radius: 22px; box-shadow: 0 16px 36px rgba(31,58,96,.28); z-index: 45; }
+
+  #subs { position: absolute; top: 1025px; left: 40px; width: 1000px; text-align: center; color: var(--ink); font-family: "Atkinson"; font-size: 68px; font-weight: 700; line-height: 1.1; letter-spacing: -.3px;
+    text-shadow: 0 0 18px rgba(251,247,241,.95), 0 0 6px rgba(251,247,241,.9); z-index: 46; }
+  #subs span { display: inline-block; margin: 0 7px; }
+  #subs span.on { color: var(--wine); }
+
+  #endcard { position: absolute; top: 225px; left: 80px; width: 920px; background: #fff; border-radius: 36px; padding: 48px 50px 46px; text-align: center; color: var(--ink); box-shadow: 0 30px 70px rgba(31,58,96,.25); }
+  #endcard .wm { display: flex; align-items: center; justify-content: center; gap: 20px; font-family: "SourceSerif"; font-weight: 700; font-size: 84px; letter-spacing: -2px; }
+  #endcard .wm svg { width: 104px; height: 104px; }
+  #endcard .city { font-size: 28px; font-weight: 700; color: var(--petrol); letter-spacing: 6px; margin-top: 4px; }
+  #endcard .gbar { width: 140px; height: 8px; border-radius: 4px; background: var(--gold); margin: 26px auto 26px; }
+  #endcard .svc { font-family: "SourceSerif"; font-size: 50px; font-weight: 700; letter-spacing: -1px; }
+  #endcard .desc { font-size: 31px; color: #45556B; margin-top: 10px; line-height: 1.3; }
+  #endcard .price { margin-top: 20px; font-family: "SourceSerif"; font-weight: 700; font-size: 66px; color: var(--navy); }
+  #endcard .cta { margin: 24px auto 0; background: var(--wine); color: #fff; font-size: 44px; font-weight: 700; padding: 24px 0; border-radius: 16px; width: 740px; }
+  #endcard .tel { font-size: 38px; font-weight: 700; margin-top: 22px; color: var(--ink); display: flex; align-items: center; justify-content: center; gap: 12px; }
+
+  #presenter { position: absolute; left: 160px; top: 1180px; width: 760px; height: 760px; overflow: visible; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg1" class="blob"></div><div id="bg2" class="blob"></div><div id="bg3" class="blob"></div>
+
+  <div id="pill">VISSTE DU ATT…?</div>
+  <div id="brand"><svg viewBox="0 0 48 48" class="logo"></svg>Teknikvän</div>
+  <div id="title"><div class="l1">Visste</div><div class="l2">du att…?</div><div class="bar"></div></div>
+
+  <div id="phone">
+    <div class="notch"></div>
+    <div id="screen" class="ui">
+      <div id="scr_alert" class="scr">
+        <div class="status">10:42</div>
+        <div class="url">sakerhets-skanning.example</div>
+        <div class="fakeline" style="top:130px;width:200px"></div>
+        <div class="fakeline" style="top:600px;width:280px"></div>
+        <div class="fakeline" style="top:626px;width:240px"></div>
+        <div id="modal">
+          <div class="hd"><svg width="46" height="42" viewBox="0 0 46 42"><path d="M23 3 L44 39 L2 39 Z" fill="#fff" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><rect x="20.5" y="14" width="5" height="13" rx="2.5" fill="#E5262B"/><circle cx="23" cy="32.5" r="3" fill="#E5262B"/></svg>VARNING!</div>
+          <div class="bd">
+            <div class="big">Din telefon är infekterad med 3 virus!</div>
+            <div class="small">Tryck på knappen för att rensa telefonen direkt.</div>
+            <div class="btn">RENSA NU</div>
+            <div class="count" id="count">Tid kvar: 00:59</div>
+          </div>
+        </div>
+        <div class="stamp" id="stampA" style="top:330px">TRYCK INTE!</div>
+        <div id="home">
+          <div class="status" style="color:#fff">10:43</div>
+          <div id="grid"></div>
+          <div id="toast"><svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="13" fill="#fff"/><path d="M7 13.5 L11.2 17.5 L19 9" stroke="#1E9E62" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Fliken är stängd</div>
+        </div>
+      </div>
+
+      <div id="scr_sms" class="scr">
+        <div class="status">10:42</div>
+        <div class="smshd"><div class="av">?</div><div class="nm">Okänt nummer</div></div>
+        <div class="smstime">Idag 10:42</div>
+        <div id="bubble">Ditt paket kunde inte levereras. Bekräfta din adress inom 24 h här:<br><span class="link" id="link">paket-bekrafta.example/7k2</span></div>
+        <div class="finger" id="fingerS"></div>
+        <svg id="nope" viewBox="0 0 190 190"><circle cx="95" cy="95" r="80" fill="rgba(255,255,255,.55)" stroke="#D92B2B" stroke-width="18"/><line x1="40" y1="150" x2="150" y2="40" stroke="#D92B2B" stroke-width="18" stroke-linecap="round"/></svg>
+      </div>
+
+      <div id="scr_update" class="scr">
+        <div class="status">10:44</div>
+        <div class="back">‹ Allmänt</div>
+        <div class="uptitle">Programuppdatering</div>
+        <div id="upcard">
+          <div class="uprow">
+            <div class="upicon"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="12" fill="none" stroke="#fff" stroke-width="7" stroke-dasharray="5.5 3.9"/><circle cx="20" cy="20" r="5" fill="#fff"/></svg></div>
+            <div><div class="upname">Säkerhetsuppdatering</div><div class="upsub">Ny version · 1,2 GB</div></div>
+          </div>
+          <div class="uptext">Innehåller viktiga säkerhetsfixar som skyddar din telefon.</div>
+          <div id="upbtn">Installera nu</div>
+          <div id="upprog"><div class="bar"><div id="barfill"></div></div><div id="proglbl">Installerar… 0 %</div></div>
+        </div>
+        <div id="updone"><div class="okc"><svg width="70" height="70" viewBox="0 0 70 70"><path d="M16 37 L29 50 L55 22" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="t">Telefonen är uppdaterad</div></div>
+      </div>
+
+      <div id="scr_bankcall" class="scr">
+        <div class="status" style="color:#fff">10:42</div>
+        <div id="bc_top">
+          <div id="bc_lbl">Inkommande samtal…</div>
+          <div id="bc_name">Banken</div>
+          <div id="bc_sub">mobil</div>
+          <div id="bc_av"><svg width="64" height="64" viewBox="0 0 64 64"><path d="M32 8 L56 20 L8 20 Z" fill="#fff"/><rect x="12" y="24" width="7" height="22" fill="#fff"/><rect x="28.5" y="24" width="7" height="22" fill="#fff"/><rect x="45" y="24" width="7" height="22" fill="#fff"/><rect x="8" y="50" width="48" height="6" rx="2" fill="#fff"/></svg></div>
+        </div>
+        <div id="bc_btns"><div class="rb red"><svg width="44" height="44" viewBox="0 0 24 24" style="transform:rotate(135deg)"><path fill="#fff" class="hs"/></svg></div><div class="rb green" id="bc_acc"><svg width="44" height="44" viewBox="0 0 24 24"><path fill="#fff" class="hs"/></svg></div></div>
+        <div id="bc_end"><div class="rb red"><svg width="44" height="44" viewBox="0 0 24 24" style="transform:rotate(135deg)"><path fill="#fff" class="hs"/></svg></div></div>
+      </div>
+
+      <div id="scr_bankid" class="scr">
+        <div class="status">10:43</div>
+        <div id="bi_hd">Legitimering</div>
+        <div id="bi_icon"><svg width="64" height="72" viewBox="0 0 64 72"><path d="M32 4 L58 14 V34 C58 52 46 63 32 68 C18 63 6 52 6 34 V14 Z" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round"/><path d="M20 36 L29 45 L45 27" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div id="bi_t">Legitimera dig</div>
+        <div id="bi_s">Säkerhetskontroll av ditt konto. Öppna och legitimera dig för att fortsätta.</div>
+        <div id="bi_req">Begärd av: <b>Okänd tjänst</b><br>Du har inte själv startat detta.</div>
+        <div id="bi_btn">Legitimera</div>
+        <div id="bi_cancel">Avbryt</div>
+        <div id="bi_dim"></div>
+        <div class="finger" id="fingerB"></div>
+        <div class="stamp" id="stampB" style="top:300px">LÄGG PÅ!</div>
+      </div>
+
+      <div id="scr_callback" class="scr">
+        <div class="status">10:45</div>
+        <div id="cb_lbl">Ring numret från ditt bankkort</div>
+        <div id="cb_num">Bankens kundtjänst</div>
+        <div id="cb_state"></div>
+        <div id="keypad"></div>
+        <div id="cb_call"><svg width="44" height="44" viewBox="0 0 24 24"><path fill="#fff" class="hs"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="q1" class="quote"><span class="who">”BANKEN”:</span>”Vi ser misstänkta köp på ditt konto!”</div>
+  <div id="q2" class="quote"><span class="who">”BANKEN”:</span>”Legitimera dig, så stoppar vi dem.”</div>
+
+  <div id="bankcard"><div class="strip"></div><div class="sign"></div><div class="hl"></div><div class="ks">Kundtjänst:</div><div class="kn">0XX-XXX XX XX</div></div>
+
+  <div id="laptop">
+    <div id="lscreen"><div id="ldisp">
+      <div class="win" style="left:40px;top:40px;width:330px;height:220px"><div class="wt"></div><div class="wl" style="width:240px"></div><div class="wl" style="width:200px"></div><div class="wl" style="width:260px"></div></div>
+      <div class="win" style="left:320px;top:140px;width:300px;height:230px"><div class="wt"></div><div class="wl" style="width:220px"></div><div class="wl" style="width:180px"></div></div>
+    </div></div>
+    <div id="lbase"></div>
+  </div>
+  <div id="call" class="ui">
+    <div class="lbl" id="calllbl">Inkommande samtal…</div>
+    <div class="cav">?</div>
+    <div class="nm">”Microsoft Support”</div>
+    <div class="nr">Okänt nummer</div>
+    <div id="callbtns">
+      <div><div class="b" id="decl"><svg width="56" height="56" viewBox="0 0 24 24" style="transform:rotate(135deg)"><path fill="#fff" class="hs"/></svg></div><div class="bl">Avböj</div></div>
+      <div><div class="b" id="acc"><svg width="56" height="56" viewBox="0 0 24 24"><path fill="#fff" class="hs"/></svg></div><div class="bl">Svara</div></div>
+    </div>
+  </div>
+
+  <div id="endcard">
+    <div class="wm"><svg viewBox="0 0 48 48" class="logo"></svg>Teknikvän</div>
+    <div class="city">ESKILSTUNA</div>
+    <div class="gbar"></div>
+    <div class="svc" id="ec_svc"></div>
+    <div class="desc" id="ec_desc"></div>
+    <div class="price" id="ec_price"></div>
+    <div class="cta" id="ctabtn">Boka på teknikvan.se</div>
+    <div class="tel"><svg width="36" height="36" viewBox="0 0 24 24"><path fill="#164E5C" class="hs"/></svg>073-895 59 69</div>
+  </div>
+
+  <div id="sticker"></div>
+
+  <!-- PRESENTATÖR: egen illustration (kort mörkt hår, kort helskägg, mörka glasögon, ljus hy) -->
+  <svg id="presenter" viewBox="0 0 800 800">
+    <g id="body">
+      <path d="M40 820 C55 665 150 590 280 566 L400 600 L520 566 C650 590 745 665 760 820 Z" fill="#164E5C"/>
+      <path d="M40 820 C55 665 150 590 280 566 L300 600 C210 640 170 720 160 820 Z" fill="#0F3D49"/>
+      <path d="M760 820 C745 665 650 590 520 566 L500 600 C590 640 630 720 640 820 Z" fill="#0F3D49"/>
+      <path d="M345 430 L345 578 Q400 612 455 578 L455 430 Z" fill="#EDC3A6"/>
+      <path d="M318 560 L400 668 L482 560 Z" fill="#F6EFE6"/>
+      <path d="M300 556 L400 690 L500 556" fill="none" stroke="#0C3440" stroke-width="18" stroke-linejoin="round"/>
+      <g transform="translate(540 664) scale(1.5)"><rect x="-2" y="-2" width="52" height="52" rx="14" fill="#F6EFE6"/><g class="logoInner"></g></g>
+    </g>
+    <g id="head">
+      <ellipse cx="400" cy="470" rx="70" ry="22" fill="#D9A587" opacity=".5"/>
+      <ellipse cx="252" cy="318" rx="30" ry="44" fill="#F3CDB3"/>
+      <ellipse cx="548" cy="318" rx="30" ry="44" fill="#F3CDB3"/>
+      <ellipse cx="256" cy="320" rx="13" ry="24" fill="#E3AE8F"/>
+      <ellipse cx="544" cy="320" rx="13" ry="24" fill="#E3AE8F"/>
+      <ellipse cx="400" cy="292" rx="150" ry="178" fill="#F8DAC5"/>
+      <path d="M252 318 Q258 470 400 496 Q542 470 548 318 Q532 412 472 428 Q400 446 328 428 Q268 412 252 318 Z" fill="#2E211A" opacity=".9"/>
+      <ellipse cx="318" cy="356" rx="28" ry="15" fill="#F2A693" opacity=".35"/>
+      <ellipse cx="482" cy="356" rx="28" ry="15" fill="#F2A693" opacity=".35"/>
+      <path d="M244 300 Q234 150 338 110 Q420 80 504 116 Q572 150 558 300 Q550 220 518 192 Q470 212 420 186 Q378 214 318 204 Q268 222 256 300 Z" fill="#23180F"/>
+      <path d="M330 126 Q410 96 488 126 Q430 118 372 148 Z" fill="#3A2A1D"/>
+      <rect id="browL" x="301" y="222" width="78" height="17" rx="8.5" fill="#23180F"/>
+      <rect id="browR" x="421" y="222" width="78" height="17" rx="8.5" fill="#23180F"/>
+      <ellipse cx="341" cy="288" rx="25" ry="21" fill="#fff"/>
+      <ellipse cx="459" cy="288" rx="25" ry="21" fill="#fff"/>
+      <g id="pupils">
+        <circle cx="341" cy="290" r="12.5" fill="#3A2A1D"/><circle cx="345" cy="285" r="4" fill="#fff"/>
+        <circle cx="459" cy="290" r="12.5" fill="#3A2A1D"/><circle cx="463" cy="285" r="4" fill="#fff"/>
+      </g>
+      <rect id="lidL" x="314" y="265" width="54" height="0" fill="#F8DAC5"/>
+      <rect id="lidR" x="432" y="265" width="54" height="0" fill="#F8DAC5"/>
+      <!-- glasögon -->
+      <g fill="rgba(255,255,255,.10)" stroke="#1B1F23" stroke-width="9" stroke-linejoin="round">
+        <rect x="292" y="252" width="98" height="74" rx="22"/>
+        <rect x="410" y="252" width="98" height="74" rx="22"/>
+      </g>
+      <path d="M390 280 Q400 270 410 280" fill="none" stroke="#1B1F23" stroke-width="8" stroke-linecap="round"/>
+      <path d="M292 276 L256 284 M508 276 L544 284" stroke="#1B1F23" stroke-width="8" stroke-linecap="round"/>
+      <path d="M302 262 L318 258" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+      <path d="M420 262 L436 258" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6"/>
+      <path d="M400 306 Q389 344 380 353 Q400 364 420 353" fill="none" stroke="#DFA383" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M346 382 Q400 362 454 382 Q444 397 400 391 Q356 397 346 382 Z" fill="#2E211A"/>
+      <g transform="translate(400 416)">
+        <g id="mouthOpen">
+          <ellipse id="mo" cx="0" cy="0" rx="36" ry="18" fill="#5E1E22"/>
+          <clipPath id="mclip"><ellipse id="moClip" cx="0" cy="0" rx="36" ry="18"/></clipPath>
+          <g clip-path="url(#mclip)">
+            <rect x="-30" y="-40" width="60" height="31" rx="6" fill="#fff"/>
+            <ellipse id="tongue" cx="0" cy="22" rx="22" ry="12" fill="#D86A6A"/>
+          </g>
+        </g>
+        <path id="smile" d="M-36 -4 Q0 22 36 -4" fill="none" stroke="#5E1E22" stroke-width="8" stroke-linecap="round"/>
+      </g>
+    </g>
+  </svg>
+
+  <div id="subs"></div>
+</div>
+
+<script>
+const LOGO_INNER = `<circle cx="16" cy="19.5" r="5.4" fill="#F6EFE6"/><path d="M6.5 38c0-5.5 4.3-10 9.5-10s9.5 4.5 9.5 10v2h-19z" fill="#F6EFE6"/><circle cx="32" cy="19.5" r="4.8" fill="#F6EFE6" opacity="0.8"/><path d="M25.5 38c0-5 3.7-9 8.5-9s8.5 4 8.5 9v2h-17z" fill="#F6EFE6" opacity="0.8"/><path transform="translate(20.16 3.6) scale(0.32)" fill="#B15B2F" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>`;
+document.querySelectorAll('svg.logo').forEach(s => s.innerHTML = `<rect width="48" height="48" rx="12" fill="#164E5C"/>` + LOGO_INNER);
+document.querySelectorAll('.logoInner').forEach(g => g.innerHTML = `<rect width="48" height="48" rx="12" fill="#164E5C"/>` + LOGO_INNER);
+const HS = "M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z";
+document.querySelectorAll('path.hs').forEach(p => p.setAttribute('d', HS));
+['1','2','3','4','5','6','7','8','9','*','0','#'].forEach(k => { const d = document.createElement('div'); d.textContent = k; document.getElementById('keypad').appendChild(d); });
+const cols = ['#E8735A', '#F2C14E', '#2E9E8F', '#4F7CC9', '#9A7AD1', '#F09A4A', '#3DB46D', '#E76F98', '#4CB8D4', '#8E8E93', '#E9CF6A', '#6C5CE7', '#1F9E86', '#D9734E', '#2F78C4', '#E88BB1', '#55C9A6', '#EBB09E', '#74A9E8', '#A29BFE'];
+cols.forEach(c => { const d = document.createElement('div'); d.style.background = c; document.getElementById('grid').appendChild(d); });
+
+// ---------- hjälpfunktioner ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, x) => a + (b - a) * x;
+const eOut = x => 1 - Math.pow(1 - clamp(x), 3);
+const eIn = x => Math.pow(clamp(x), 3);
+const eIO = x => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const eBack = x => { x = clamp(x); const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const prog = (t, a, d) => clamp((t - a) / d);
+const $ = id => document.getElementById(id);
+const hash = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+function pose(el, { x = 0, y = 0, s = 1, r = 0, o = 1 }) {
+  el.style.transform = `translate(${x}px, ${y}px) scale(${s}) rotate(${r}deg)`;
+  el.style.opacity = o;
+  el.style.visibility = o <= 0.001 ? 'hidden' : 'visible';
+}
+const STY = { warn: ['#880202', '#fff'], info: ['#1F3A60', '#F6EFE6'], good: ['#164E5C', '#F6EFE6'], gold: ['#BF8A26', '#1B1F23'] };
+
+let D = null, linkPos = null, blinks = [];
+function init(data) {
+  D = data;
+  const sr = $('screen').getBoundingClientRect();
+  const show = $('scr_sms'); show.style.visibility = 'visible';
+  const lr = $('link').getBoundingClientRect();
+  linkPos = { x: lr.left - sr.left + lr.width * 0.45, y: lr.top - sr.top + lr.height * 0.5 };
+  show.style.visibility = 'hidden';
+  let b = 0.9, i = 0; while (b < D.total + 5) { blinks.push(b); b += 2.6 + 1.8 * hash(i++); }
+  const ec = D.endcard || {};
+  $('ec_svc').innerHTML = ec.svc || ''; $('ec_desc').innerHTML = ec.desc || ''; $('ec_price').innerHTML = ec.price || '';
+}
+
+const envAt = t => { const i = Math.floor(t * D.fps); return D.env[Math.max(0, Math.min(D.env.length - 1, i))] || 0; };
+const envAvg = (t, w) => { let s = 0, n = 0; for (let k = -w; k <= w; k++) { s += envAt(t + k / D.fps); n++; } return s / n; };
+
+let lastSub = null;
+function subtitle(t) {
+  const el = $('subs');
+  let s = null;
+  for (let i = 0; i < D.subs.length; i++) {
+    const c = D.subs[i], nx = D.subs[i + 1];
+    const until = nx ? Math.min(nx.start, c.end + 0.4) : c.end + 0.4;
+    if (t >= c.start && t < until) { s = c; break; }
+  }
+  if (s !== lastSub) {
+    lastSub = s;
+    el.innerHTML = s ? s.txt.split(/\s+/).map(w => `<span>${w}</span>`).join(' ') : '';
+    if (s) { s.words = s.txt.split(/\s+/); s.cum = []; let acc = 0; s.words.forEach(w => { s.cum.push(acc); acc += w.length + 1; }); s.len = acc; }
+  }
+  if (!s) { el.style.opacity = 0; return null; }
+  const p = clamp((t - s.start) / Math.max(0.2, s.end - s.start));
+  let wi = 0; s.cum.forEach((c, i) => { if (p * s.len >= c) wi = i; });
+  [...el.children].forEach((sp, i) => sp.className = i === wi ? 'on' : '');
+  const a = prog(t, s.start, 0.15);
+  el.style.opacity = a;
+  el.style.transform = `translateY(${(1 - eOut(a)) * 24}px) scale(${lerp(.95, 1, eOut(a))})`;
+  return s;
+}
+
+function sceneAt(t) { let k = 0; D.scenes.forEach((s, i) => { if (t >= s.start) k = i; }); return k; }
+
+function containerPose(cont, t, k) {
+  const S = D.scenes, cur = S[k];
+  if (cur.container === cont) {
+    if (k === 0) {
+      const t0 = cur.start + (cur.title ? 1.3 : 0.1);
+      if (cont === 'end') return { o: prog(t, t0, .4), s: lerp(.85, 1, eBack(prog(t, t0, .6))), y: 0, x: 0 };
+      const e = prog(t, t0, 0.7); return { x: 0, y: (1 - eBack(e)) * 1500, o: e > 0 ? 1 : 0, r: 0 };
+    }
+    if (S[k - 1].container !== cont) {
+      const b = cur.start;
+      if (cont === 'end') { const e = prog(t, b + 0.2, .6); return { y: (1 - eOut(e)) * 120, s: lerp(.85, 1, eBack(e)), o: Math.min(1, e * 2.5), x: 0 }; }
+      const e = prog(t, b + 0.1, 0.6); return { x: (1 - eOut(e)) * 1100, r: (1 - eOut(e)) * 8, o: e > 0 ? 1 : 0 };
+    }
+    return { x: 0, o: 1 };
+  }
+  if (k > 0 && S[k - 1].container === cont && t < cur.start + 0.5) {
+    const e = eIn(prog(t, cur.start, 0.5));
+    if (cont === 'end') return { o: 1 - e };
+    return { x: -e * 1100, r: -e * 6, o: 1, s: 1 };
+  }
+  return { o: 0 };
+}
+
+const SCREENS = ['alert', 'sms', 'update', 'bankcall', 'bankid', 'callback'];
+
+function render(t) {
+  const S = D.scenes, k = sceneAt(t), cur = S[k], first = S[0];
+  // bakgrund
+  pose($('bg1'), { x: -200 + 70 * Math.sin(t * .23), y: 100 + 80 * Math.cos(t * .19) });
+  pose($('bg2'), { x: 620 + 70 * Math.cos(t * .21), y: 760 + 90 * Math.sin(t * .17) });
+  pose($('bg3'), { x: 560 + 120 * Math.sin(t * .13), y: 380 + 60 * Math.cos(t * .29) });
+
+  // titel + topp
+  const tt0 = first.title ? first.start + 0.05 : -10;
+  const ti = eBack(prog(t, tt0, 0.5)), to = eIn(prog(t, tt0 + 1.15, 0.45));
+  pose($('title'), { y: -to * 420, s: lerp(.5, 1, ti) * lerp(1, .5, to), o: first.title ? Math.min(prog(t, tt0, .2), 1 - to) : 0 });
+  const pt = first.title ? tt0 + 1.45 : 0;
+  pose($('pill'), { s: lerp(.4, 1, eBack(prog(t, pt, 0.45))), o: prog(t, pt, .2) });
+  pose($('brand'), { o: prog(t, pt + 0.1, .3), x: (1 - eOut(prog(t, pt + 0.1, .5))) * 40 });
+
+  // behållare
+  const ph = containerPose('phone', t, k);
+  // telefonens skakning (larm / ringsignal)
+  let shake = 0;
+  if (cur.kind === 'alert' && t > cur.events.alarm && t < (cur.events.stamp ?? cur.end)) { const p = (t - cur.events.alarm) % 1.6; shake = p < .35 ? Math.sin(p / .35 * Math.PI) * 2.2 * Math.sin(t * 55) : 0; }
+  if (cur.kind === 'bankcall' && t > cur.events.ring && t < (cur.events.answer ?? cur.end)) { const p = (t - cur.events.ring) % 1.6; shake = p < .45 ? Math.sin(p / .45 * Math.PI) * 2.6 * Math.sin(t * 60) : 0; }
+  pose($('phone'), { x: ph.x || 0, y: ph.y || 0, s: ph.s || 1, r: (ph.r || 0) + shake, o: ph.o });
+  const lp = containerPose('laptop', t, k);
+  pose($('laptop'), { x: lp.x || 0, o: lp.o });
+  const ep = containerPose('end', t, k);
+  pose($('endcard'), { y: ep.y || 0, s: ep.s || 1, o: ep.o });
+
+  // skärmar i telefonen
+  SCREENS.forEach(n => { const el = $('scr_' + n); el.style.visibility = 'hidden'; el.style.zIndex = 1; });
+  let phoneScene = k; while (phoneScene > 0 && S[phoneScene].container !== 'phone') phoneScene--;
+  if (S[phoneScene].container === 'phone') {
+    const ps = S[phoneScene];
+    const prev = phoneScene > 0 && S[phoneScene - 1].container === 'phone' ? S[phoneScene - 1] : null;
+    const cf = prev ? prog(t, ps.start, .4) : 1;
+    if (prev && cf < 1) { const el = $('scr_' + prev.kind); el.style.visibility = 'visible'; el.style.opacity = 1; drawScreen(prev, t); }
+    const el = $('scr_' + ps.kind); el.style.visibility = 'visible'; el.style.opacity = cf; el.style.zIndex = 2; drawScreen(ps, t);
+  }
+
+  // laptop-samtal
+  drawCall(t, k);
+  // bank: citat + kort
+  drawBankExtras(t, k);
+
+  // klistermärke
+  const sk = $('sticker');
+  let st = null;
+  S.forEach(sc => sc.stickers.forEach(x => { if (t >= x.t0 && t < x.t1) st = x; }));
+  if (st) {
+    if (sk.dataset.k !== String(st.t0)) { sk.dataset.k = st.t0; sk.innerHTML = st.html; const c = STY[st.style] || STY.gold; sk.style.background = c[0]; sk.style.color = c[1]; }
+    const a = prog(t, st.t0, .4), b = prog(t, st.t1 - 0.25, .25);
+    pose(sk, { s: lerp(.4, 1, eBack(a)) * lerp(1, .8, b), r: -2 + Math.sin(t * 2) * 0.5, o: Math.min(1, a * 3) * (1 - b) });
+  } else pose(sk, { o: 0 });
+
+  // slutkort-knapp
+  if (cur.kind === 'cta' && cur.events.pulse) {
+    const cp = prog(t, cur.events.pulse, .5);
+    $('ctabtn').style.transform = `scale(${1 + 0.07 * Math.sin(Math.PI * cp) + (t > cur.events.pulse + 0.5 ? 0.025 * Math.sin((t - cur.events.pulse) * 5) : 0)})`;
+  }
+
+  // presentatör
+  const sub = subtitle(t);
+  const open = envAt(t);
+  const talk = envAvg(t, 6);
+  const enter = eOut(prog(t, 0.25, 0.8));
+  const breathe = Math.sin(t * 2.1) * 5;
+  pose($('presenter'), { y: (1 - enter) * 700 + breathe * 0.4 });
+  const nod = sub ? Math.sin(prog(t, sub.start, .35) * Math.PI) * 3 : 0;
+  const rot = clamp(talk * 2) * 2.6 * Math.sin(t * 1.9) + 1.1 * Math.sin(t * .7);
+  $('head').setAttribute('transform', `translate(0 ${breathe * 0.3 + nod * 2}) rotate(${rot} 400 470)`);
+  $('body').setAttribute('transform', `translate(0 ${breathe * 0.5}) rotate(${rot * 0.25} 400 800)`);
+  const q = sub && /\?|Visste|ALDRIG|ÄR|inte\.|inget|Lägg på|fejka/.test(sub.txt) ? Math.sin(Math.PI * clamp(prog(t, sub.start, 0.25) * (1 - prog(t, sub.end - 0.3, 0.3)))) : 0;
+  const lift = -12 * clamp(q * 1.4);
+  $('browL').setAttribute('transform', `translate(0 ${lift}) rotate(${lift * 0.25} 341 230)`);
+  $('browR').setAttribute('transform', `translate(0 ${lift}) rotate(${-lift * 0.25} 459 230)`);
+  let lid = 0; for (const b of blinks) { if (t >= b && t < b + 0.18) { lid = Math.sin((t - b) / 0.18 * Math.PI); break; } }
+  ['lidL', 'lidR'].forEach(id => $(id).setAttribute('height', 46 * lid));
+  const look = cur.kind !== 'cta' && t > 1.3 ? -5 : 0;
+  $('pupils').setAttribute('transform', `translate(${2 * Math.sin(t * .5)} ${look + Math.sin(t * .37)})`);
+  const ry = 3 + 25 * clamp(open);
+  const rx = 30 + 8 * clamp(open) - 3 * clamp(open - 0.7) * Math.sin(t * 9);
+  ['mo', 'moClip'].forEach(id => { $(id).setAttribute('ry', ry); $(id).setAttribute('rx', rx); });
+  $('tongue').setAttribute('cy', 6 + ry * 0.7);
+  const speaking = open > 0.02 || talk > 0.08;
+  $('mouthOpen').style.opacity = speaking ? 1 : 0;
+  $('smile').style.opacity = speaking ? 0 : 1;
+  const big = cur.kind === 'cta' ? 1.25 : 1;
+  $('smile').setAttribute('d', `M${-36 * big} -4 Q0 ${18 + 6 * big} ${36 * big} -4`);
+}
+
+function drawScreen(sc, t) {
+  const ev = sc.events;
+  if (sc.kind === 'alert') {
+    const close = ev.close ?? 1e9, stamp = ev.stamp ?? 1e9;
+    pose($('modal'), { y: eIn(prog(t, close - 0.25, 0.4)) * 800, o: 1 - prog(t, close, .2) });
+    const stp = prog(t, stamp, 0.32);
+    pose($('stampA'), { s: lerp(2.6, 1, eOut(stp)), r: -12, o: stp > 0 ? Math.min(1, stp * 3) * (1 - prog(t, close - 0.2, .2)) : 0 });
+    $('count').textContent = 'Tid kvar: 00:' + String(Math.max(0, 59 - Math.floor(Math.max(0, t - ev.alarm)))).padStart(2, '0');
+    pose($('home'), { o: prog(t, close, .35) });
+    pose($('toast'), { y: (1 - eBack(prog(t, close + 0.25, .4))) * -80, o: prog(t, close + 0.25, .2) });
+    [...$('grid').children].forEach((d, i) => { d.style.transform = `scale(${eBack(prog(t, close + 0.1 + i * 0.025, .35))})`; });
+  }
+  if (sc.kind === 'sms') {
+    const be = prog(t, ev.bubble, .4);
+    pose($('bubble'), { y: (1 - eOut(be)) * 40, s: lerp(.85, 1, eBack(be)), o: be });
+    const fin = eIO(prog(t, ev.finger ?? 1e9, 1.3)), fout = eIO(prog(t, (ev.nope ?? 1e9) + 0.15, 0.7));
+    const fx0 = 270, fy0 = 640, fx1 = linkPos.x - 39, fy1 = linkPos.y + 10;
+    pose($('fingerS'), { x: lerp(lerp(fx0, fx1, fin), fx0 + 60, fout), y: lerp(lerp(fy0, fy1 + 40, fin), fy0 + 120, fout), o: prog(t, ev.finger ?? 1e9, .3) * (1 - fout), s: 1 + 0.06 * Math.sin(t * 6) });
+    const ne = prog(t, ev.nope ?? 1e9, .35);
+    pose($('nope'), { x: linkPos.x - 95, y: linkPos.y - 95, s: lerp(1.8, 1, eBack(ne)), o: ne > 0 ? Math.min(1, ne * 3) : 0 });
+  }
+  if (sc.kind === 'update') {
+    const tap = prog(t, ev.tap ?? 1e9, .3);
+    $('upbtn').style.display = tap < 1 ? 'flex' : 'none';
+    $('upbtn').style.transform = `scale(${1 - 0.08 * Math.sin(Math.PI * tap)})`;
+    $('upprog').style.display = tap >= 1 ? 'block' : 'none';
+    const pg = prog(t, (ev.tap ?? 1e9) + 0.3, (ev.done - ev.tap) - 0.4);
+    const pct = Math.round(eIO(pg) * 100);
+    $('barfill').style.width = pct + '%';
+    $('proglbl').textContent = pct < 100 ? `Installerar… ${pct} %` : 'Klart!';
+    const de = prog(t, ev.done ?? 1e9, .45);
+    pose($('updone'), { s: lerp(.3, 1, eBack(de)), o: de > 0 ? Math.min(1, de * 3) : 0 });
+  }
+  if (sc.kind === 'bankcall') {
+    const ans = ev.answer ?? 1e9;
+    const on = t >= ans + 0.25;
+    const ap = prog(t, ans, .3);
+    $('bc_acc').style.transform = `scale(${1 - 0.15 * Math.sin(Math.PI * ap)})`;
+    $('bc_btns').style.display = on ? 'none' : 'flex';
+    $('bc_end').style.display = on ? 'flex' : 'none';
+    const secs = Math.max(0, Math.floor(t - ans));
+    $('bc_lbl').textContent = on ? `00:${String(secs).padStart(2, '0')}` : 'Inkommande samtal…';
+    const pulse = !on && t > ev.ring ? 1 + 0.06 * Math.sin(t * 8) : 1;
+    $('bc_av').style.transform = `scale(${pulse})`;
+  }
+  if (sc.kind === 'bankid') {
+    const fin = eIO(prog(t, ev.finger ?? 1e9, 1.2)), fout = eIO(prog(t, (ev.stamp ?? 1e9) + 0.1, 0.6));
+    pose($('fingerB'), { x: lerp(lerp(260, 140, fin), 290, fout), y: lerp(lerp(700, 505, fin), 760, fout), o: prog(t, ev.finger ?? 1e9, .3) * (1 - fout), s: 1 + 0.06 * Math.sin(t * 6) });
+    const stp = prog(t, ev.stamp ?? 1e9, .32);
+    pose($('stampB'), { s: lerp(2.6, 1, eOut(stp)), r: -12, o: stp > 0 ? Math.min(1, stp * 3) : 0 });
+    pose($('bi_dim'), { o: prog(t, ev.stamp ?? 1e9, .3) });
+  }
+  if (sc.kind === 'callback') {
+    const dial = ev.dial ?? 1e9;
+    const dp = prog(t, dial, .3);
+    $('cb_call').style.transform = `scale(${1 - 0.15 * Math.sin(Math.PI * dp)})`;
+    const on = t > dial + 0.2;
+    $('cb_state').textContent = on ? 'Ringer' + '.'.repeat(1 + Math.floor((t - dial) * 2.5) % 3) : '';
+    $('cb_lbl').style.opacity = 1;
+  }
+}
+
+function drawCall(t, k) {
+  const sc = D.scenes[k];
+  if (sc.kind !== 'call') { pose($('call'), { o: 0 }); return; }
+  const ev = sc.events;
+  const ce = prog(t, ev.card, .45), dEnd = prog(t, (ev.decline ?? 1e9) + 1.0, .4);
+  let cvx = 0;
+  if (t > ev.card && t < (ev.decline ?? 1e9)) { const p = (t - ev.card) % 1.6; cvx = p < 0.5 ? Math.sin(t * 70) * 7 * Math.sin(p / 0.5 * Math.PI) : 0; }
+  pose($('call'), { x: cvx, y: (1 - eOut(ce)) * 60 + dEnd * 40, s: lerp(.7, 1, eBack(ce)), o: (ce > 0 ? Math.min(1, ce * 2.5) : 0) * (1 - dEnd) });
+  const dp = prog(t, ev.decline ?? 1e9, .3);
+  $('decl').style.transform = `scale(${1 - 0.18 * Math.sin(Math.PI * dp)})`;
+  $('callbtns').style.opacity = 1 - prog(t, (ev.decline ?? 1e9) + 0.3, .3);
+  const done = t > (ev.decline ?? 1e9) + 0.3;
+  $('calllbl').textContent = done ? 'Samtal avslutat' : 'Inkommande samtal…';
+  $('calllbl').style.color = done ? '#FF6B6B' : '#A9AFBA';
+}
+
+function drawBankExtras(t, k) {
+  const sc = D.scenes[k];
+  ['q1', 'q2'].forEach(id => {
+    const t0 = sc.kind === 'bankcall' ? sc.events[id] : undefined;
+    if (t0 === undefined) { pose($(id), { o: 0 }); return; }
+    const nxt = sc.stickers.map(x => x.t0).filter(x => x > t0)[0];
+    const a = prog(t, t0, .4), out = prog(t, Math.min(sc.end - 0.35, nxt ?? 1e9), .3);
+    pose($(id), { s: lerp(.5, 1, eBack(a)), r: id === 'q1' ? -3 : 3, o: Math.min(1, a * 3) * (1 - out), y: (1 - eOut(a)) * 30 });
+  });
+  const c0 = sc.kind === 'callback' ? sc.events.card : undefined;
+  if (c0 === undefined) { pose($('bankcard'), { o: 0 }); return; }
+  const a = prog(t, c0, .6), out = prog(t, (sc.events.dial ?? sc.end) + 1.2, .5);
+  pose($('bankcard'), { x: (1 - eOut(a)) * -700 - out * 700, r: -8 + (1 - eOut(a)) * -10, o: a > 0 ? 1 : 0 });
+}
+</script>
+</body>
+</html>

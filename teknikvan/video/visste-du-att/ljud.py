@@ -1,6 +1,7 @@
-"""Genererar egen bakgrundsmusik + ljudeffekter för videon (inga externa ljudfiler).
+"""Mixar röst + egen bakgrundsmusik + ljudeffekter (inga externa ljudfiler).
 
-Användning: python3 ljud.py timeline.json ut_musik_och_effekter.wav ut_bara_effekter.wav
+Användning: python3 ljud.py voice.json voice.wav ut_mix.wav ut_utan_musik.wav
+Musiken sänks automatiskt (duckas) när presentatören pratar.
 """
 import json
 import sys
@@ -167,6 +168,11 @@ def sfx(name):
             f = 1800 + 1600 * rng.random()
             add(s, tone(f, 0.35, harm=(1,), decay=10), k * 0.06, 0.08)
         return s
+    if name == 'ringback':
+        s = np.zeros(int(3.2 * SR))
+        for k in range(2):
+            add(s, tone(425, 1.0, harm=(1, .15), decay=0.4, attack=0.02), k * 1.6, 0.22)
+        return s
     raise ValueError(name)
 
 
@@ -178,21 +184,45 @@ def write(path, x):
         w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes(data)
 
 
+def read_mono(path):
+    with wave.open(path, 'rb') as w:
+        assert w.getframerate() == SR, w.getframerate()
+        a = np.frombuffer(w.readframes(w.getnframes()), '<i2').astype(np.float64) / 32768
+        if w.getnchannels() == 2:
+            a = a.reshape(-1, 2).mean(axis=1)
+    return a
+
+
 def main():
-    tl = json.load(open(sys.argv[1]))
+    tl = json.load(open(sys.argv[1], encoding='utf-8'))
     total = tl['total']
     n = int(total * SR)
+    voice = np.zeros(n)
+    v = read_mono(sys.argv[2])[:n]
+    voice[:len(v)] = v
+    voice = voice / max(1e-9, np.max(np.abs(voice))) * 0.85
     fx = np.zeros(n)
     for name, t in tl['sounds']:
-        add(fx, sfx(name), t, 0.8)
+        add(fx, sfx(name), t, 0.55)
     mus = music(total)[:n]
-    mix = mus * 0.9 + fx
-    peak = np.max(np.abs(mix))
-    mix = mix / peak * 0.89
-    fxn = fx / max(1e-9, np.max(np.abs(fx))) * 0.89
-    write(sys.argv[2], mix)
-    write(sys.argv[3], fxn)
-    print('ok', round(total, 2), 's, toppnivå före normalisering', round(float(peak), 3))
+    # duckning: följ röstens nivå (mjuk attack/release)
+    hop = 441
+    m = n // hop
+    lvl = np.sqrt(np.mean(voice[:m * hop].reshape(m, hop) ** 2, axis=1))
+    act = (lvl > 0.01).astype(float)
+    k = np.ones(25) / 25  # ca 0,25 s utjämning
+    act = np.clip(np.convolve(act, k, mode='same') * 1.6, 0, 1)
+    gain = 1 - 0.68 * act
+    gain = np.repeat(gain, hop)
+    gain = np.concatenate([gain, np.full(n - len(gain), gain[-1] if len(gain) else 1)])
+    mus = mus / max(1e-9, np.max(np.abs(mus))) * 0.42 * gain
+    mix = voice + mus + fx
+    mix = mix / max(1.0, np.max(np.abs(mix)) / 0.95)
+    nomus = voice + fx
+    nomus = nomus / max(1.0, np.max(np.abs(nomus)) / 0.95)
+    write(sys.argv[3], mix)
+    write(sys.argv[4], nomus)
+    print('ok', round(total, 2), 's')
 
 
 if __name__ == '__main__':
