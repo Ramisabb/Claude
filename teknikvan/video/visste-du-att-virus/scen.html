@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<title>Visste du att – virus</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #0B2340; }
+  body { font-family: "Inter", "Liberation Sans", sans-serif; -webkit-font-smoothing: antialiased; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background: radial-gradient(circle at 50% 30%, #1D5283 0%, #113761 50%, #0A2240 100%); }
+  .abs { position: absolute; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .35; }
+  #bg1 { width: 620px; height: 620px; background: #2EC4A6; }
+  #bg2 { width: 520px; height: 520px; background: #7B6CF6; }
+  #bg3 { width: 460px; height: 460px; background: #FFC94A; opacity: .09; }
+
+  /* Topp */
+  #brand { position: absolute; top: 96px; right: 70px; color: #fff; font-size: 40px; font-weight: 800; letter-spacing: -.5px; display: flex; align-items: center; gap: 14px; }
+  #brand .mark { width: 50px; height: 50px; border-radius: 15px; background: #2EC4A6; color: #0B2340; font-weight: 900; font-size: 34px; display: flex; align-items: center; justify-content: center; }
+  #pill { position: absolute; top: 92px; left: 70px; background: #FFC94A; color: #0B2340; font-weight: 900; font-size: 40px; padding: 12px 28px; border-radius: 40px; letter-spacing: .5px; transform-origin: left center; }
+  #title { position: absolute; left: 0; width: 1080px; top: 560px; text-align: center; color: #fff; font-weight: 900; line-height: .95; letter-spacing: -2px; }
+  #title .l1 { font-size: 190px; }
+  #title .l2 { font-size: 150px; color: #FFC94A; }
+  #title .q { color: #fff; }
+
+  /* Telefon */
+  #phone { position: absolute; left: 350px; top: 230px; width: 380px; height: 760px; background: #0E0F12; border-radius: 58px; padding: 14px; box-shadow: 0 40px 80px rgba(0,0,0,.45), inset 0 0 0 3px #2A2D33; }
+  #screen { position: relative; width: 352px; height: 732px; border-radius: 45px; overflow: hidden; background: #fff; }
+  .notch { position: absolute; top: 26px; left: 135px; width: 110px; height: 30px; border-radius: 16px; background: #0E0F12; z-index: 20; }
+  .scr { position: absolute; inset: 0; }
+  .status { position: absolute; top: 24px; left: 30px; font-size: 17px; font-weight: 700; color: #111; }
+
+  /* Falsk varning */
+  #scrAlert { background: #EEF0F4; }
+  .url { position: absolute; top: 68px; left: 18px; right: 18px; height: 40px; border-radius: 12px; background: #fff; color: #777; font-size: 15px; display: flex; align-items: center; padding-left: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+  .fakeline { position: absolute; left: 22px; height: 14px; border-radius: 7px; background: #D9DCE3; }
+  #modal { position: absolute; left: 18px; width: 316px; top: 160px; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 18px 40px rgba(200,0,0,.35); }
+  #modal .hd { background: #E5262B; color: #fff; height: 84px; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 38px; font-weight: 900; letter-spacing: 1px; }
+  #modal .bd { padding: 20px 20px 22px; text-align: center; }
+  #modal .big { font-size: 25px; font-weight: 800; color: #1A1A1A; line-height: 1.2; }
+  #modal .small { font-size: 17px; color: #555; margin: 10px 0 16px; line-height: 1.3; }
+  #modal .btn { background: #E5262B; color: #fff; font-size: 26px; font-weight: 900; border-radius: 16px; height: 66px; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
+  #modal .count { color: #E5262B; font-weight: 800; font-size: 17px; margin-top: 12px; }
+  #stamp { position: absolute; left: 30px; top: 330px; width: 292px; padding: 14px 0; text-align: center; border: 9px solid #E5262B; border-radius: 22px; color: #E5262B; background: rgba(255,255,255,.92); font-size: 46px; font-weight: 900; letter-spacing: 1px; }
+
+  /* Hemskärm */
+  #scrHome { background: linear-gradient(160deg, #73C8F7 0%, #4A7FE0 55%, #6E5BD8 100%); }
+  #grid { position: absolute; top: 150px; left: 26px; right: 26px; display: grid; grid-template-columns: repeat(4, 62px); gap: 26px 18px; justify-content: space-between; }
+  #grid div { width: 62px; height: 62px; border-radius: 17px; box-shadow: 0 3px 8px rgba(0,0,0,.15); }
+  #toast { position: absolute; top: 78px; left: 0; right: 0; margin: 0 auto; width: max-content; background: #1FAE6B; color: #fff; font-weight: 800; font-size: 21px; padding: 12px 22px; border-radius: 30px; white-space: nowrap; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 20px rgba(0,0,0,.25); }
+
+  /* SMS */
+  #scrSms { background: #fff; }
+  .smshd { position: absolute; top: 0; left: 0; right: 0; height: 150px; background: #F6F6F8; border-bottom: 1px solid #E2E2E6; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 12px; gap: 6px; }
+  .smshd .av { width: 54px; height: 54px; border-radius: 50%; background: #A5ABB6; color: #fff; font-size: 30px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  .smshd .nm { font-size: 17px; font-weight: 700; color: #111; }
+  .smstime { position: absolute; top: 172px; left: 0; right: 0; text-align: center; font-size: 14px; color: #8A8F98; font-weight: 600; }
+  #bubble { position: absolute; top: 205px; left: 16px; width: 280px; background: #E9E9EB; border-radius: 24px 24px 24px 8px; padding: 16px 18px; font-size: 20px; line-height: 1.32; color: #111; }
+  #bubble .link { color: #1A6DFF; text-decoration: underline; font-weight: 600; word-break: break-all; }
+  #finger { position: absolute; width: 78px; height: 78px; border-radius: 50%; background: rgba(255,255,255,.35); border: 5px solid #fff; box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+  #finger::after { content: ""; position: absolute; left: 22px; top: 22px; width: 24px; height: 24px; border-radius: 50%; background: #fff; }
+  #nope { position: absolute; width: 190px; height: 190px; }
+
+  /* Uppdatering */
+  #scrUpdate { background: #F2F2F7; }
+  .back { position: absolute; top: 70px; left: 20px; color: #1A6DFF; font-size: 19px; font-weight: 600; }
+  .uptitle { position: absolute; top: 104px; left: 20px; font-size: 31px; font-weight: 800; color: #111; letter-spacing: -.5px; }
+  #upcard { position: absolute; top: 165px; left: 16px; right: 16px; background: #fff; border-radius: 20px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .uprow { display: flex; gap: 14px; align-items: center; }
+  .upicon { width: 66px; height: 66px; border-radius: 16px; background: linear-gradient(160deg, #9BA3AF, #5F6773); display: flex; align-items: center; justify-content: center; }
+  .upname { font-size: 20px; font-weight: 800; color: #111; }
+  .upsub { font-size: 15px; color: #8A8F98; margin-top: 3px; }
+  .uptext { font-size: 16px; color: #444; line-height: 1.35; margin: 16px 0 18px; }
+  #upbtn { height: 58px; border-radius: 14px; background: #1A6DFF; color: #fff; font-size: 22px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  #upprog { display: none; }
+  .bar { height: 14px; border-radius: 7px; background: #DCE3F0; overflow: hidden; }
+  #barfill { height: 100%; width: 0; background: #1A6DFF; border-radius: 7px; }
+  #proglbl { font-size: 17px; color: #444; font-weight: 700; margin-top: 10px; }
+  #updone { position: absolute; top: 345px; left: 0; right: 0; text-align: center; }
+  #updone .ok { width: 128px; height: 128px; margin: 0 auto 16px; border-radius: 50%; background: #1FAE6B; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 26px rgba(31,174,107,.45); }
+  #updone .t { font-size: 24px; font-weight: 800; color: #148A53; }
+
+  /* Laptop + samtal */
+  #laptop { position: absolute; left: 110px; top: 300px; width: 860px; height: 520px; }
+  #lscreen { position: absolute; left: 70px; top: 0; width: 720px; height: 466px; background: #1C1F25; border-radius: 26px; padding: 18px; }
+  #ldisp { width: 100%; height: 100%; border-radius: 12px; overflow: hidden; background: linear-gradient(150deg, #3D74DB 0%, #6C5BD6 100%); position: relative; }
+  .win { position: absolute; background: #fff; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+  .win .wl { height: 10px; border-radius: 5px; background: #E0E3EA; margin: 12px 16px 0; }
+  .win .wt { height: 26px; background: #F1F2F5; border-radius: 10px 10px 0 0; }
+  #lbase { position: absolute; left: 0; top: 462px; width: 860px; height: 38px; background: linear-gradient(#D3D8DF, #9EA5B0); border-radius: 4px 4px 34px 34px; }
+  #lbase::after { content: ""; position: absolute; left: 360px; top: 0; width: 140px; height: 12px; border-radius: 0 0 12px 12px; background: #8E95A1; }
+  #call { position: absolute; left: 220px; top: 360px; width: 640px; background: rgba(24,25,30,.97); border-radius: 40px; padding: 34px 30px 36px; color: #fff; text-align: center; box-shadow: 0 30px 70px rgba(0,0,0,.5); }
+  #call .lbl { font-size: 24px; color: #A9AFBA; font-weight: 600; }
+  #call .av { width: 104px; height: 104px; border-radius: 50%; background: #5A606B; margin: 18px auto 14px; display: flex; align-items: center; justify-content: center; font-size: 56px; font-weight: 800; }
+  #call .nm { font-size: 42px; font-weight: 800; }
+  #call .nr { font-size: 22px; color: #A9AFBA; margin-top: 6px; }
+  #callbtns { display: flex; justify-content: center; gap: 150px; margin-top: 30px; }
+  #callbtns .b { width: 104px; height: 104px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  #callbtns .bl { font-size: 20px; color: #C9CED6; margin-top: 10px; font-weight: 600; }
+  #decl { background: #E5262B; }
+  #acc { background: #1FAE6B; }
+
+  /* Klistermärke */
+  #sticker { position: absolute; top: 800px; left: 80px; width: 920px; text-align: center; font-size: 52px; font-weight: 900; line-height: 1.12; padding: 22px 30px; border-radius: 28px; box-shadow: 0 16px 36px rgba(0,0,0,.35); letter-spacing: -.5px; }
+
+  /* Undertexter */
+  #subs { position: absolute; top: 1025px; left: 40px; width: 1000px; text-align: center; color: #fff; font-size: 64px; font-weight: 800; line-height: 1.12; letter-spacing: -.5px;
+    text-shadow: 0 4px 0 rgba(0,0,0,.35), 0 0 30px rgba(0,0,0,.55); }
+  #subs span { display: inline-block; margin: 0 8px; }
+  #subs span.on { color: #FFC94A; }
+
+  /* Slutkort */
+  #endcard { position: absolute; top: 230px; left: 80px; width: 920px; background: #fff; border-radius: 44px; padding: 50px 50px 48px; text-align: center; color: #0B2340; box-shadow: 0 30px 70px rgba(0,0,0,.4); }
+  #endcard .wm { display: flex; align-items: center; justify-content: center; gap: 18px; font-size: 76px; font-weight: 900; letter-spacing: -2px; }
+  #endcard .wm .mark { width: 86px; height: 86px; border-radius: 24px; background: #2EC4A6; color: #0B2340; display: flex; align-items: center; justify-content: center; font-size: 58px; }
+  #endcard .city { font-size: 28px; font-weight: 700; color: #2E8F7E; letter-spacing: 4px; margin-top: 6px; }
+  #endcard hr { border: 0; height: 3px; background: #E6EAF0; margin: 30px 40px; }
+  #endcard .svc { font-size: 46px; font-weight: 900; letter-spacing: -1px; }
+  #endcard .desc { font-size: 30px; color: #45556B; margin-top: 10px; line-height: 1.3; }
+  #endcard .price { display: inline-block; margin-top: 24px; background: #FFC94A; font-size: 54px; font-weight: 900; padding: 8px 34px; border-radius: 22px; }
+  #endcard .cta { margin: 30px auto 0; background: #2EC4A6; color: #0B2340; font-size: 42px; font-weight: 900; padding: 22px 0; border-radius: 26px; width: 720px; }
+  #endcard .tel { font-size: 36px; font-weight: 800; margin-top: 22px; color: #0B2340; }
+
+  #presenter { position: absolute; left: 160px; top: 1180px; width: 760px; height: 760px; overflow: visible; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg1" class="blob"></div><div id="bg2" class="blob"></div><div id="bg3" class="blob"></div>
+
+  <div id="pill">VISSTE DU ATT…?</div>
+  <div id="brand"><div class="mark">T</div>Teknikvän</div>
+  <div id="title"><div class="l1">VISSTE</div><div class="l2">DU ATT<span class="q">…?</span></div></div>
+
+  <!-- TELEFON -->
+  <div id="phone">
+    <div class="notch"></div>
+    <div id="screen">
+      <div id="scrAlert" class="scr">
+        <div class="status">10:42</div>
+        <div class="url">sakerhets-skanning.example</div>
+        <div class="fakeline" style="top:130px;width:200px"></div>
+        <div class="fakeline" style="top:600px;width:280px"></div>
+        <div class="fakeline" style="top:626px;width:240px"></div>
+        <div class="fakeline" style="top:652px;width:260px"></div>
+        <div id="modal">
+          <div class="hd">
+            <svg width="46" height="42" viewBox="0 0 46 42"><path d="M23 3 L44 39 L2 39 Z" fill="#fff" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><rect x="20.5" y="14" width="5" height="13" rx="2.5" fill="#E5262B"/><circle cx="23" cy="32.5" r="3" fill="#E5262B"/></svg>
+            VARNING!
+          </div>
+          <div class="bd">
+            <div class="big">Din telefon är infekterad med 3 virus!</div>
+            <div class="small">Tryck på knappen för att rensa telefonen direkt.</div>
+            <div class="btn">RENSA NU</div>
+            <div class="count" id="count">Tid kvar: 00:59</div>
+          </div>
+        </div>
+        <div id="stamp">TRYCK INTE!</div>
+      </div>
+
+      <div id="scrHome" class="scr">
+        <div class="status" style="color:#fff">10:43</div>
+        <div id="grid"></div>
+        <div id="toast">
+          <svg width="26" height="26" viewBox="0 0 26 26"><circle cx="13" cy="13" r="13" fill="#fff"/><path d="M7 13.5 L11.2 17.5 L19 9" stroke="#1FAE6B" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Fliken är stängd
+        </div>
+      </div>
+
+      <div id="scrSms" class="scr">
+        <div class="status">10:42</div>
+        <div class="smshd"><div class="av">?</div><div class="nm">Okänt nummer</div></div>
+        <div class="smstime">Idag 10:42</div>
+        <div id="bubble">Ditt paket kunde inte levereras. Bekräfta din adress inom 24 h här:<br><span class="link" id="link">paket-bekrafta.example/7k2</span></div>
+        <div id="finger"></div>
+        <svg id="nope" viewBox="0 0 190 190"><circle cx="95" cy="95" r="80" fill="rgba(255,255,255,.55)" stroke="#E5262B" stroke-width="18"/><line x1="40" y1="150" x2="150" y2="40" stroke="#E5262B" stroke-width="18" stroke-linecap="round"/></svg>
+      </div>
+
+      <div id="scrUpdate" class="scr">
+        <div class="status">10:44</div>
+        <div class="back">‹ Allmänt</div>
+        <div class="uptitle">Programuppdatering</div>
+        <div id="upcard">
+          <div class="uprow">
+            <div class="upicon"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="12" fill="none" stroke="#fff" stroke-width="7" stroke-dasharray="5.5 3.9"/><circle cx="20" cy="20" r="5" fill="#fff"/></svg></div>
+            <div><div class="upname">Säkerhetsuppdatering</div><div class="upsub">Ny version · 1,2 GB</div></div>
+          </div>
+          <div class="uptext">Innehåller viktiga säkerhetsfixar som skyddar din telefon.</div>
+          <div id="upbtn">Installera nu</div>
+          <div id="upprog"><div class="bar"><div id="barfill"></div></div><div id="proglbl">Installerar… 0 %</div></div>
+        </div>
+        <div id="updone">
+          <div class="ok"><svg width="70" height="70" viewBox="0 0 70 70"><path d="M16 37 L29 50 L55 22" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="t">Telefonen är uppdaterad</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAPTOP -->
+  <div id="laptop">
+    <div id="lscreen"><div id="ldisp">
+      <div class="win" style="left:40px;top:40px;width:330px;height:220px"><div class="wt"></div><div class="wl" style="width:240px"></div><div class="wl" style="width:200px"></div><div class="wl" style="width:260px"></div><div class="wl" style="width:150px"></div></div>
+      <div class="win" style="left:320px;top:140px;width:300px;height:230px"><div class="wt"></div><div class="wl" style="width:220px"></div><div class="wl" style="width:180px"></div><div class="wl" style="width:240px"></div></div>
+    </div></div>
+    <div id="lbase"></div>
+  </div>
+  <div id="call">
+    <div class="lbl" id="calllbl">Inkommande samtal…</div>
+    <div class="av">?</div>
+    <div class="nm">”Microsoft Support”</div>
+    <div class="nr">Okänt nummer</div>
+    <div id="callbtns">
+      <div><div class="b" id="decl"><svg width="56" height="56" viewBox="0 0 24 24" style="transform:rotate(135deg)"><path fill="#fff" d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg></div><div class="bl">Avböj</div></div>
+      <div><div class="b" id="acc"><svg width="56" height="56" viewBox="0 0 24 24"><path fill="#fff" d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg></div><div class="bl">Svara</div></div>
+    </div>
+  </div>
+
+  <!-- SLUTKORT -->
+  <div id="endcard">
+    <div class="wm"><div class="mark">T</div>Teknikvän</div>
+    <div class="city">ESKILSTUNA</div>
+    <hr>
+    <div class="svc">Digital säkerhetsgenomgång</div>
+    <div class="desc">Vi kollar och säkrar dina enheter –<br>hemma hos dig.</div>
+    <div class="price">699 kr</div>
+    <div class="cta" id="ctabtn">Boka på teknikvan.se</div>
+    <div class="tel">073-895 59 69</div>
+  </div>
+
+  <div id="sticker"></div>
+
+  <!-- PRESENTATÖR (egen illustration) -->
+  <svg id="presenter" viewBox="0 0 800 800">
+    <g id="body">
+      <path d="M40 820 C55 665 150 590 280 566 L400 600 L520 566 C650 590 745 665 760 820 Z" fill="#26A98F"/>
+      <path d="M40 820 C55 665 150 590 280 566 L300 600 C210 640 170 720 160 820 Z" fill="#1F927B"/>
+      <path d="M760 820 C745 665 650 590 520 566 L500 600 C590 640 630 720 640 820 Z" fill="#1F927B"/>
+      <path d="M345 430 L345 578 Q400 612 455 578 L455 430 Z" fill="#E2A47C"/>
+      <path d="M318 560 L400 668 L482 560 Z" fill="#F5F6F8"/>
+      <path d="M300 556 L400 690 L500 556" fill="none" stroke="#1C8571" stroke-width="18" stroke-linejoin="round"/>
+      <circle cx="575" cy="700" r="36" fill="#fff"/>
+      <text x="575" y="715" text-anchor="middle" font-family="Inter" font-weight="900" font-size="42" fill="#26A98F">T</text>
+    </g>
+    <g id="head">
+      <ellipse cx="400" cy="470" rx="70" ry="22" fill="#C98A63" opacity=".55"/>
+      <ellipse cx="252" cy="318" rx="30" ry="44" fill="#EBB28C"/>
+      <ellipse cx="548" cy="318" rx="30" ry="44" fill="#EBB28C"/>
+      <ellipse cx="256" cy="320" rx="13" ry="24" fill="#D9976F"/>
+      <ellipse cx="544" cy="320" rx="13" ry="24" fill="#D9976F"/>
+      <ellipse cx="400" cy="292" rx="150" ry="178" fill="#F2C39E"/>
+      <path d="M252 318 Q258 468 400 494 Q542 468 548 318 Q532 412 472 428 Q400 446 328 428 Q268 412 252 318 Z" fill="#6A4631" opacity=".92"/>
+      <ellipse cx="318" cy="352" rx="28" ry="16" fill="#F0A088" opacity=".35"/>
+      <ellipse cx="482" cy="352" rx="28" ry="16" fill="#F0A088" opacity=".35"/>
+      <path d="M246 300 Q236 150 338 112 Q420 82 502 118 Q570 150 556 300 Q548 226 516 196 Q468 214 418 188 Q376 216 318 206 Q270 222 258 300 Z" fill="#3B271B"/>
+      <path d="M330 128 Q410 98 486 128 Q430 120 372 150 Z" fill="#54392A"/>
+      <g id="brows">
+        <rect id="browL" x="303" y="234" width="76" height="17" rx="8.5" fill="#3B271B"/>
+        <rect id="browR" x="421" y="234" width="76" height="17" rx="8.5" fill="#3B271B"/>
+      </g>
+      <g id="eyes">
+        <ellipse cx="341" cy="287" rx="25" ry="21" fill="#fff"/>
+        <ellipse cx="459" cy="287" rx="25" ry="21" fill="#fff"/>
+        <g id="pupils">
+          <circle cx="341" cy="289" r="12.5" fill="#2A1B12"/><circle cx="345" cy="284" r="4" fill="#fff"/>
+          <circle cx="459" cy="289" r="12.5" fill="#2A1B12"/><circle cx="463" cy="284" r="4" fill="#fff"/>
+        </g>
+      </g>
+      <rect id="lidL" x="314" y="264" width="54" height="0" fill="#F2C39E"/>
+      <rect id="lidR" x="432" y="264" width="54" height="0" fill="#F2C39E"/>
+      <path d="M400 300 Q389 342 380 351 Q400 362 420 351" fill="none" stroke="#D38E66" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M346 380 Q400 360 454 380 Q444 395 400 389 Q356 395 346 380 Z" fill="#4E3223"/>
+      <g id="mouth" transform="translate(400 414)">
+        <g id="mouthOpen">
+          <ellipse id="mo" cx="0" cy="0" rx="36" ry="18" fill="#5E1E22"/>
+          <clipPath id="mclip"><ellipse id="moClip" cx="0" cy="0" rx="36" ry="18"/></clipPath>
+          <g clip-path="url(#mclip)">
+            <rect x="-30" y="-40" width="60" height="31" rx="6" fill="#fff"/>
+            <ellipse id="tongue" cx="0" cy="22" rx="22" ry="12" fill="#D86A6A"/>
+          </g>
+        </g>
+        <path id="smile" d="M-36 -4 Q0 22 36 -4" fill="none" stroke="#5E1E22" stroke-width="8" stroke-linecap="round"/>
+      </g>
+    </g>
+  </svg>
+
+  <div id="subs"></div>
+</div>
+
+<script>
+// ---------- hjälpfunktioner ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, x) => a + (b - a) * x;
+const eOut = x => 1 - Math.pow(1 - clamp(x), 3);
+const eIn = x => Math.pow(clamp(x), 3);
+const eIO = x => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const eBack = x => { x = clamp(x); const c1 = 1.9, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const prog = (t, a, d) => clamp((t - a) / d);
+const $ = id => document.getElementById(id);
+const hash = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+// ---------- manus ----------
+const SCENES = [
+  { id: 'hook', lead: 1.75, chunks: ["Visste du att det här…", "oftast ÄR själva bluffen?"] },
+  { id: 'alert', chunks: ["Falska virusvarningar", "som plötsligt dyker upp", "i mobilen eller datorn", "är ett vanligt knep.", "De vill att du trycker,", "laddar ner en app", "eller ringer ett nummer.", "Gör inget av det.", "Stäng bara fliken."] },
+  { id: 'call', lead: 0.6, chunks: ["Visste du också", "att Microsoft aldrig ringer upp dig", "och säger att din dator har virus?", "Om någon gör det:", "lägg på."] },
+  { id: 'sms', lead: 0.6, chunks: ["Och de flesta ”virus” på mobilen", "kommer inte av sig själva.", "De kommer via en länk,", "oftast i ett SMS", "om ett paket, en faktura", "eller din bank.", "Klicka inte.", "Öppna appen eller webbsidan", "själv i stället."] },
+  { id: 'update', lead: 0.5, tail: 0.7, chunks: ["Det bästa skyddet?", "Det är faktiskt enkelt.", "Uppdatera mobilen och datorn", "när de ber om det.", "Det tar några minuter", "och täpper till säkerhetshålen."] },
+  { id: 'cta', lead: 0.6, chunks: ["Osäker på om din mobil", "eller dator är säker?", "Vi på Teknikvän går igenom den", "tillsammans med dig,", "hemma hos dig i Eskilstuna.", "Boka på teknikvan.se", "och följ oss för fler", "”Visste du att”!"] },
+];
+
+const TL = (() => {
+  let t = 0; const subs = [], scenes = {};
+  SCENES.forEach(s => {
+    const st = t; t += (s.lead ?? 0.35); const ch = [];
+    s.chunks.forEach(txt => {
+      const words = txt.split(/\s+/).length;
+      const d = Math.max(0.95, 0.3 * words + 0.27);
+      const c = { txt, start: t, end: t + d, words, scene: s.id };
+      ch.push(c); subs.push(c); t += d;
+    });
+    t += s.tail ?? 0.15;
+    scenes[s.id] = { start: st, end: t, ch };
+  });
+  const total = t + 1.8;
+  return { scenes, subs, total };
+})();
+const SC = TL.scenes;
+const C = (id, i, o = 0) => SC[id].ch[i].start + o;
+const EV = {
+  title: 0.05, titleOut: 1.2, phoneIn: 1.3, alarm: 1.55,
+  stamp: C('alert', 7, 0.15), stickerAlert: C('alert', 7, 0.15), close: C('alert', 8, 0.55),
+  callStart: SC.call.start, callCard: SC.call.start + 0.55, stickerCall: C('call', 1, 0.2), decline: C('call', 4, 0.15),
+  smsStart: SC.sms.start, smsBubble: SC.sms.start + 0.7, finger: C('sms', 4, 0), nope: C('sms', 6, 0.1), stickerSms: C('sms', 6, 0.1),
+  updStart: SC.update.start, updTap: C('update', 2, 0.35), updDone: C('update', 4, 0.2), stickerUpd: C('update', 4, 0.9),
+  ctaStart: SC.cta.start, ctaPulse: C('cta', 5, 0),
+};
+const SOUND = [
+  ['whoosh', EV.title], ['pop', EV.titleOut + 0.35], ['whoosh', EV.phoneIn], ['alarm', EV.alarm], ['alarm', C('alert', 0, 0.2)],
+  ['stamp', EV.stamp], ['pop', EV.stickerAlert + 0.05], ['whoosh', EV.close], ['ding', EV.close + 0.25],
+  ['whoosh', EV.callStart], ['vibrate', EV.callCard], ['vibrate', EV.callCard + 1.6], ['vibrate', EV.callCard + 3.2], ['pop', EV.stickerCall], ['click', EV.decline], ['hangup', EV.decline + 0.1],
+  ['whoosh', EV.smsStart], ['sms', EV.smsBubble], ['nope', EV.nope], ['pop', EV.stickerSms + 0.05],
+  ['whoosh', EV.updStart], ['click', EV.updTap], ['pop', EV.stickerUpd], ['success', EV.updDone],
+  ['whoosh', EV.ctaStart], ['sparkle', EV.ctaStart + 0.3], ['click', EV.ctaPulse],
+];
+window.TIMELINE = { total: TL.total, subs: TL.subs.map(s => ({ txt: s.txt, start: s.start, end: s.end })), sounds: SOUND };
+
+// ---------- förberedelser ----------
+const grid = $('grid');
+const cols = ['#FF6B6B', '#FFC94A', '#2EC4A6', '#5B8CFF', '#B07CFF', '#FF9F43', '#34C759', '#FF5E9B', '#43C6E8', '#8E8E93', '#F7D154', '#6C5CE7', '#00B894', '#E17055', '#0984E3', '#FD79A8', '#55EFC4', '#FAB1A0', '#74B9FF', '#A29BFE'];
+cols.forEach(c => { const d = document.createElement('div'); d.style.background = c; grid.appendChild(d); });
+
+let linkPos = null;
+function measure() {
+  const sr = $('screen').getBoundingClientRect();
+  const lr = $('link').getBoundingClientRect();
+  linkPos = { x: lr.left - sr.left + lr.width * 0.45, y: lr.top - sr.top + lr.height * 0.5 };
+}
+
+const blinks = []; { let b = 0.9; let i = 0; while (b < 200) { blinks.push(b); b += 2.6 + 1.8 * hash(i++); } }
+
+let lastSub = null;
+function setSub(t) {
+  const el = $('subs');
+  const s = TL.subs.find(s => t >= s.start && t < s.end + 0.12);
+  if (s !== lastSub) {
+    lastSub = s;
+    el.innerHTML = s ? s.txt.split(/\s+/).map(w => `<span>${w}</span>`).join(' ') : '';
+  }
+  if (!s) return { talk: 0 };
+  const p = clamp((t - s.start) / (s.end - s.start));
+  const wi = Math.min(s.words - 1, Math.floor(p * s.words));
+  [...el.children].forEach((sp, i) => sp.className = i === wi ? 'on' : '');
+  const a = prog(t, s.start, 0.16);
+  el.style.opacity = a;
+  el.style.transform = `translateY(${(1 - eOut(a)) * 26}px) scale(${lerp(.94, 1, eOut(a))})`;
+  const wp = (p * s.words) % 1;
+  const talking = t < s.end;
+  const open = talking ? Math.pow(Math.sin(Math.PI * wp), 0.7) * (0.55 + 0.45 * hash(wi + s.start * 10)) * (0.8 + 0.2 * Math.sin(t * 31)) : 0;
+  return { talk: talking ? 1 : 0, open, sub: s, p };
+}
+
+function pose(el, { x = 0, y = 0, s = 1, r = 0, o = 1 }) {
+  el.style.transform = `translate(${x}px, ${y}px) scale(${s}) rotate(${r}deg)`;
+  el.style.opacity = o;
+  el.style.visibility = o <= 0.001 ? 'hidden' : 'visible';
+}
+
+// ---------- rendering ----------
+function render(t) {
+  if (!linkPos) measure();
+  // bakgrund
+  pose($('bg1'), { x: -180 + 60 * Math.sin(t * .23), y: 120 + 80 * Math.cos(t * .19) });
+  pose($('bg2'), { x: 650 + 70 * Math.cos(t * .21), y: 820 + 90 * Math.sin(t * .17), o: 1 });
+  pose($('bg3'), { x: 300 + 120 * Math.sin(t * .13), y: 1350 + 60 * Math.cos(t * .29), o: 1 });
+
+  // titel
+  const ti = eBack(prog(t, EV.title, 0.5)), to = eIn(prog(t, EV.titleOut, 0.45));
+  pose($('title'), { y: -to * 380, s: lerp(.5, 1, ti) * lerp(1, .5, to), o: Math.min(prog(t, EV.title, .2), 1 - to) });
+  const pi = eBack(prog(t, EV.titleOut + 0.3, 0.45));
+  pose($('pill'), { s: lerp(.4, 1, pi), o: prog(t, EV.titleOut + 0.3, .2) });
+  pose($('brand'), { o: prog(t, EV.titleOut + 0.4, .3), x: (1 - eOut(prog(t, EV.titleOut + 0.4, .5))) * 40 });
+
+  // telefon
+  let px = 0, py = 0, ps = 1, pr = 0, po = 1;
+  if (t < EV.callStart) {
+    const e = prog(t, EV.phoneIn, 0.7);
+    py = (1 - eBack(e)) * 1500; po = e > 0 ? 1 : 0;
+    const alertOn = t < EV.stamp;
+    if (alertOn && t > EV.alarm) { const ph = (t - EV.alarm) % 1.6; const burst = ph < 0.35 ? Math.sin(ph / 0.35 * Math.PI) : 0; pr = burst * 2.2 * Math.sin(t * 55); }
+    px = -eIn(prog(t, EV.callStart - 0.01, 0.5)) * 1000;
+  } else if (t < EV.smsStart) {
+    px = -eIn(prog(t, EV.callStart, 0.5)) * 1000; pr = -px * 0.01;
+  } else {
+    px = (1 - eOut(prog(t, EV.smsStart, 0.6))) * 1000; pr = (1 - eOut(prog(t, EV.smsStart, 0.6))) * 8;
+    const ce = eIn(prog(t, EV.ctaStart, 0.45)); ps = lerp(1, .7, ce); po = 1 - ce; py = ce * 200;
+  }
+  pose($('phone'), { x: px, y: py, s: ps, r: pr, o: po });
+
+  // skärmar
+  const homeIn = prog(t, EV.close, 0.35);
+  pose($('scrAlert'), { o: t < EV.smsStart ? 1 : 0 });
+  pose($('modal'), { y: eIn(prog(t, EV.close - 0.25, 0.4)) * 800, o: 1 - prog(t, EV.close, .2) });
+  const stp = prog(t, EV.stamp, 0.32);
+  pose($('stamp'), { s: lerp(2.6, 1, eOut(stp)), r: -12, o: stp > 0 ? Math.min(1, stp * 3) * (1 - prog(t, EV.close - 0.2, .2)) : 0 });
+  $('count').textContent = 'Tid kvar: 00:' + String(Math.max(0, 59 - Math.floor(Math.max(0, t - EV.alarm)))).padStart(2, '0');
+  pose($('scrHome'), { o: t < EV.smsStart ? homeIn : 0 });
+  pose($('toast'), { y: (1 - eBack(prog(t, EV.close + 0.25, .4))) * -80, o: prog(t, EV.close + 0.25, .2) });
+  [...grid.children].forEach((d, i) => { const e = eBack(prog(t, EV.close + 0.1 + i * 0.025, .35)); d.style.transform = `scale(${e})`; });
+
+  pose($('scrSms'), { o: t >= EV.smsStart && t < EV.updStart + 0.4 ? 1 : 0 });
+  const be = prog(t, EV.smsBubble, .4);
+  pose($('bubble'), { y: (1 - eOut(be)) * 40, s: lerp(.85, 1, eBack(be)), o: be });
+  $('bubble').style.transformOrigin = 'left bottom';
+  // finger
+  const fin = eIO(prog(t, EV.finger, 1.4)), fout = eIO(prog(t, EV.nope + 0.15, 0.7));
+  const fx0 = 270, fy0 = 640, fx1 = linkPos.x - 39, fy1 = linkPos.y + 10;
+  const fx = lerp(lerp(fx0, fx1, fin), fx0 + 60, fout), fy = lerp(lerp(fy0, fy1 + 40, fin), fy0 + 120, fout);
+  pose($('finger'), { x: fx, y: fy, o: prog(t, EV.finger, .3) * (1 - fout), s: 1 + 0.06 * Math.sin(t * 6) });
+  const ne = prog(t, EV.nope, .35);
+  pose($('nope'), { x: linkPos.x - 95, y: linkPos.y - 95, s: lerp(1.8, 1, eBack(ne)), o: ne > 0 ? Math.min(1, ne * 3) : 0 });
+
+  const ue = prog(t, EV.updStart, .4);
+  pose($('scrUpdate'), { o: t >= EV.updStart ? ue : 0 });
+  const tap = prog(t, EV.updTap, .3);
+  $('upbtn').style.display = tap < 1 ? 'flex' : 'none';
+  $('upbtn').style.transform = `scale(${1 - 0.08 * Math.sin(Math.PI * tap)})`;
+  $('upprog').style.display = tap >= 1 ? 'block' : 'none';
+  const pg = prog(t, EV.updTap + 0.3, EV.updDone - EV.updTap - 0.5);
+  const pct = Math.round(eIO(pg) * 100);
+  $('barfill').style.width = pct + '%';
+  $('proglbl').textContent = pct < 100 ? `Installerar… ${pct} %` : 'Klart!';
+  const de = prog(t, EV.updDone, .45);
+  pose($('updone'), { s: lerp(.3, 1, eBack(de)), o: de > 0 ? Math.min(1, de * 3) : 0 });
+
+  // laptop + samtal
+  let lx; if (t < EV.smsStart) lx = (1 - eOut(prog(t, EV.callStart + 0.15, 0.6))) * 1100; else lx = -eIn(prog(t, EV.smsStart, 0.45)) * 1100;
+  pose($('laptop'), { x: lx, o: t > EV.callStart && t < EV.smsStart + 0.5 ? 1 : 0 });
+  const ce = prog(t, EV.callCard, .45);
+  const dEnd = prog(t, EV.decline + 1.0, .4);
+  let cvx = 0;
+  if (t > EV.callCard && t < EV.decline) { const ph = (t - EV.callCard) % 1.6; cvx = ph < 0.5 ? Math.sin(t * 70) * 7 * Math.sin(ph / 0.5 * Math.PI) : 0; }
+  pose($('call'), { x: cvx, y: (1 - eOut(ce)) * 60 + dEnd * 40, s: lerp(.7, 1, eBack(ce)), o: (ce > 0 ? Math.min(1, ce * 2.5) : 0) * (1 - dEnd) * (t < EV.smsStart ? 1 : 0) });
+  const dp = prog(t, EV.decline, .3);
+  $('decl').style.transform = `scale(${1 - 0.18 * Math.sin(Math.PI * dp)})`;
+  $('decl').style.boxShadow = dp > 0 && dp < 1 ? `0 0 0 ${dp * 40}px rgba(229,38,43,${0.5 * (1 - dp)})` : 'none';
+  $('callbtns').style.opacity = 1 - prog(t, EV.decline + 0.3, .3);
+  $('calllbl').textContent = t > EV.decline + 0.3 ? 'Samtal avslutat' : 'Inkommande samtal…';
+  $('calllbl').style.color = t > EV.decline + 0.3 ? '#FF6B6B' : '#A9AFBA';
+
+  // klistermärke
+  const ST = [
+    [EV.stickerAlert, EV.close + 1.2, 'Falsk varning?<br>Tryck inte – stäng fliken.', '#FFC94A', '#0B2340'],
+    [EV.stickerCall, SC.call.end - 0.1, 'Microsoft ringer ALDRIG<br>om virus. Lägg på!', '#FF5A5F', '#fff'],
+    [EV.stickerSms, SC.sms.end - 0.1, 'Klicka inte på länkar i SMS', '#FFC94A', '#0B2340'],
+    [EV.stickerUpd, SC.update.end - 0.1, 'Uppdatera = bästa skyddet', '#2EC4A6', '#0B2340'],
+  ];
+  const st = ST.find(s => t >= s[0] && t < s[1]);
+  const sk = $('sticker');
+  if (st) {
+    if (sk.dataset.k !== String(st[0])) { sk.dataset.k = st[0]; sk.innerHTML = st[2]; sk.style.background = st[3]; sk.style.color = st[4]; }
+    const a = prog(t, st[0], .4), b = prog(t, st[1] - 0.25, .25);
+    pose(sk, { s: lerp(.4, 1, eBack(a)) * lerp(1, .8, b), r: -2.5 + Math.sin(t * 2) * 0.6, o: Math.min(1, a * 3) * (1 - b) });
+  } else pose(sk, { o: 0 });
+
+  // slutkort
+  const ee = prog(t, EV.ctaStart + 0.2, .6);
+  pose($('endcard'), { y: (1 - eOut(ee)) * 120, s: lerp(.85, 1, eBack(ee)), o: Math.min(1, ee * 2.5) });
+  const cp = prog(t, EV.ctaPulse, .5);
+  $('ctabtn').style.transform = `scale(${1 + 0.07 * Math.sin(Math.PI * cp) + (t > EV.ctaPulse + 0.5 ? 0.025 * Math.sin((t - EV.ctaPulse) * 5) : 0)})`;
+
+  // presentatör
+  const sp = setSub(t);
+  const enter = eOut(prog(t, 0.25, 0.8));
+  const breathe = Math.sin(t * 2.1) * 5;
+  pose($('presenter'), { y: (1 - enter) * 700 + breathe * 0.4, o: 1 });
+  const nod = sp.sub ? Math.sin(prog(t, sp.sub.start, .35) * Math.PI) * 3 : 0;
+  const rot = sp.talk * 2.4 * Math.sin(t * 1.9) + 1.1 * Math.sin(t * .7);
+  $('head').setAttribute('transform', `translate(0 ${breathe * 0.3 + nod * 2}) rotate(${rot} 400 470)`);
+  $('body').setAttribute('transform', `translate(0 ${breathe * 0.5}) rotate(${rot * 0.25} 400 800)`);
+  const q = sp.sub && /\?|Visste|ALDRIG|ÄR|inte\.|Gör inget/.test(sp.sub.txt) ? Math.sin(Math.PI * clamp(prog(t, sp.sub.start, 0.25) * (1 - prog(t, sp.sub.end - 0.3, 0.3)))) : 0;
+  const lift = -12 * clamp(q * 1.4);
+  $('browL').setAttribute('transform', `translate(0 ${lift}) rotate(${lift * 0.25} 341 242)`);
+  $('browR').setAttribute('transform', `translate(0 ${lift}) rotate(${-lift * 0.25} 459 242)`);
+  // blinkning
+  let lid = 0; for (const b of blinks) { if (t >= b && t < b + 0.18) { lid = Math.sin((t - b) / 0.18 * Math.PI); break; } }
+  ['lidL', 'lidR'].forEach(id => $(id).setAttribute('height', 46 * lid));
+  const look = t < EV.ctaStart && t > EV.phoneIn ? -5 : 0;
+  $('pupils').setAttribute('transform', `translate(${2 * Math.sin(t * .5)} ${look + Math.sin(t * .37)})`);
+  // mun
+  const op = sp.open || 0;
+  const ry = 3 + 24 * op;
+  $('mo').setAttribute('ry', ry); $('moClip').setAttribute('ry', ry);
+  $('mo').setAttribute('rx', 30 + 8 * op); $('moClip').setAttribute('rx', 30 + 8 * op);
+  $('tongue').setAttribute('cy', 6 + ry * 0.7);
+  $('mouthOpen').style.opacity = sp.talk ? 1 : 0;
+  $('smile').style.opacity = sp.talk ? 0 : 1;
+  const big = t > EV.ctaStart ? 1.25 : 1;
+  $('smile').setAttribute('d', `M${-36 * big} -4 Q0 ${18 + 6 * big} ${36 * big} -4`);
+}
+render(0);
+</script>
+</body>
+</html>
